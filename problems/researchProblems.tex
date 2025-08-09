@@ -1,0 +1,314 @@
+\documentclass[10pt]{article}
+\newcommand{\DoubleSpace}{\edef\baselinestretch{1.4}\Large\normalsize}
+\DoubleSpace
+
+% set the indentation to 0, and increase the paragraph spacing:
+\parskip=15pt plus1pt
+\parindent=0pt
+% default values are \parskip=0pt plus1pt \\ \parindent=20pt for plain tex.
+\setlength{\oddsidemargin}{-.8in}
+\setlength{\evensidemargin}{0pt}
+\setlength{\headsep}{-.3in}
+\setlength{\topmargin}{0pt}
+\setlength{\textheight}{10in}
+\setlength{\textwidth}{6.5in}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{tabular}{llll} \hline
+Student & Project & Papers being read & Papers being written \\
+Lin Yang        & canonical views (image mining) & Raguram, Yang & Level 2 proposal \\
+David O'Gwynn   & mesh segmentation & BFS/Fiedler & curvature, Level 2 proposal\\
+--              & registration & ICP/features \\
+--              & shape descriptors & curvature, suggestive contours \\
+--              & shape software \\
+--              & parsing of shape data (ctr08, obj, B-spline) \\
+Sagar Thapaliya & obstacle-avoiding fitting & Farin, shortest/safest path  & \\
+Patrick Butler  & terrain reconstruction & FKU, Barequet & USGS parsing \\
+{\bf Gilbert Weinstein} & differential geometry of shape models \\
+Eric Frees      & \\
+Douglas Ross    & finding pockets & bitangency, feature-based reg 
+                & liquid vessels, can you handle it?\\
+Mark Dillavou   & {\tiny inserting 3d models from CT into surgical field} 
+                & {\tiny Z. Wood mesh extraction from volumes} & \\ \hline
+\end{tabular}
+
+\begin{tabular}{lllllll} \hline
+Project & Topic of paper & Student & Submission \\
+Shape at a branch & Cassini/rosette branching & & Eurographics\\ % ****
+                  % called intermediate contour approach
+Shape at a branch & pincered bridges & & WSCG \\
+Shape at a branch & m-to-n 'divide and conquer to 2-to-1' algorithm & & NSF \\
+Shape at a branch & determining topology of a contour dataset \\
+Shape at a branch & definition (and parsing) of ctr08 format \\
+Shape at a branch & smooth lofted intermediate contour reconstruction & & \\ % contour/paper/2007 (e.g., ctr08text.tex) 
+Shape software suite & \\
+Interpolation & obstacle-avoiding interpolation & & tech report, CAD 10 \\       % *
+Mesh semantics & Fiedler for mesh segmentation w. weakening              % *
+               & David & Meshing Roundtable \\ % rEGISTRATION/src
+Image mining & canonical views from photo collections & Lin & Google \\ 
+Mesh semantics & feature detection: characterization of liquid vessels & Douglas \\
+Fitting & tutorial on cubic B-spline/Bezier fitting & Sagar \\
+Terrain & cleanup/topology-extraction from topographical maps & Patrick & Google \\ % *
+Eric project & registration; architectural geometry; symmetry; & Eric & NSF UG research \\
+             & lines on meshes; Algorithmic Beauty of Plants;  \\
+Registration & registration of two contour meshes & David, Doug, Eric, Marcus & MICCAI \\    % *
+Anatomical modeling & \\
+Ruled surface & finding directrix curve \\
+Tangent space & tangential curve/surface; bitangency \\
+Tangent space & tritangency, pockets, protrusions & & CAD \\
+Tangent space & visibility graph \\
+Camera control& rational quaternion splines \\ \hline
+\end{tabular}
+
+\begin{tabular}{lll} \hline
+Funding source & Project & Due Date \\
+Google (research.google.com) & Shape software suite; image mining & 8.15 \\
+NSF IIS/Human-Centered Computing (Computer Graphics) & Image mining & 12.1\\
+NSF CCF/Algorithmic Foundations (Computational Geometry) & Shape at a branch & 12.1\\
+NIH & Reconstruction for quantitative analysis \\ \hline
+% Insertion of CT models into surgical suite \\ \hline
+\end{tabular}
+
+\clearpage
+
+{\bf Google abstract}:
+
+1) interpolation as learning:
+interpolation of point data (e.g., multidimensional learning);
+interpolation is the generation of complete data from partial data: 
+this is a form of learning
+
+2) interpolation from contour datasets (e.g., topographical maps)
+
+3) construction of natural camera paths interpolating along a road in Google Maps
+
+{\bf NSF abstract}:
+
+1) a software suite for shape modeling including meshes, splines, contours
+
+2) the definition of ramiform shape (shape at a branch);\\
+in particular, building ramiform shape from a contour fragment (e.g,. 1-to-2 fragment)
+
+{\bf Munden abstract}:
+
+registration between two slightly different meshes using feature analysis
+
+A challenge for the quantitative assessment of therapeutic responses is the ability 
+to register (align) datasets across imaging modalities, imaging platforms in different 
+hospitals, and across a time series. 
+The ability to compare and integrate scans from several imaging modalities and platforms 
+involves rigid registration, 
+while non-rigid registration (or perhaps partial registration of stable subareas) 
+is particularly useful for analysis across a time series, 
+where the geometry will gradually change. 
+Many powerful techniques for registration have been developed in computer vision 
+for the registration of stereo image pairs and, particularly in recent years, in 
+computer graphics for the registration of point data from multiple scans of an object. 
+Many of these techniques rely on variants of ICP or iterated closest 
+point (Besl, 1992; Rusinkiewicz, 2008), which minimizes least-squares error between 
+two point sets, and include extensions to non-rigid registration (Brown, July 2007). 
+Recently, a powerful method (4PCS) has been developed for registration of two 
+noisy datasets with minimal overlap, which is efficient and robust to 
+outliers (Aiger, August 2008). 
+ICP is well adapted to rigid registration across platforms and modalities, and 
+some forms of non-rigid registration across a time series 
+through its extension (Brown, July 2007),
+while 4PCS is promising for the registration of fixed subareas 
+within a globally changing dataset across a time series. 
+Distinctive features such as ridges (Pennec, 2000) will also be used to guide the registration,
+leveraging work on the detection of feature lines on meshes (Rusinkiewicz, 2008).
+Comparison of two patients, or of a patient to a digital atlas, 
+requires more radical deformation of structure and therefore different techniques, 
+such as (Eckstein, 2007) , which could also be explored.
+Successful development of this project would allow harmonization 
+of data collected from variable platforms to facilitate accurate analysis 
+of tumor response and validation of imaging biomarkers.
+
+\clearpage
+
+{\bf Shape formats}: points (e.g., scan), 
+               {\bf mesh} (data structure = winged/corner/quadedge, 
+                     software = Rusienkiwicz/Heckbert/Joy), 
+               architectural, 
+               {\bf Bezier/B-spline}, 
+               implicit (eg, piecewise algebraic), particles,
+               *contour, range map, voxels, 
+               {\bf keyframes} (positions/orientations)
+
+
+{\bf Interpolation is the addition of structure to a shape, using hints and deduction from
+the existing data.  Interpolation as learning.}
+
+{\bf Shape interpolation} (translation/transformation): 
+              point to mesh (e.g., Amenta, Dey); 
+              mesh to smooth model (e.g., Mann, Peters, Qin); 
+              contour to mesh (FKU, Sederberg, Barequet);
+              hole filling (Hahn); 
+              contour to smooth surface (Gabrielides);
+              structure from motion (images -> camera path)
+
+Collect points and contours from a known mathematical algebraic surface,
+a known parametric surface, and a known mesh.
+This will allow a quantitative assessment of the quality of a reconstruction
+based on the ground truth of the original shape model.
+
+Invite Stephen Mann, Jorg Peters, and Hong Qin to talk about mesh to smooth model.
+Invite Tom Sederberg, Gill Barequet, and Gabrielides to talk about contour reconstruction.
+Invite Nina Amenta to talk about mesh reconstruction.
+Invite Gerald Farin to talk about curve and surface interpolation.
+
+GRAIL desks: David, Lin, Sagar; potential: Eric/Patrick share the 4th desk;
+                    members but no space necessary: Doug/Mark.
+Logo brainstorm.  
+Tech report brainstorm (call the tech series 'patches').  
+Paper submissions over the next 6 months.
+Monthly jam session on research progress.
+Monthly party (skating/movie/music).
+
+\begin{tabular}{ll} \hline
+Course & Textbook \\
+% CS201 & {\em Sedgewick} and Wayne \\
+CS250 & {\em Scheinerman} \\
+CS350 & Hopcroft, Motwani and Ullman; Prusinkiewicz and Lindenmayer; 
+        dragon book (lexical analysis; parser) \\
+% CS753 & de Berg; CGAL \\
+% CS770 & Shirley; Shreiner (OpenGL) \\
+CS771 & Farin; consider Goldman; Knotty \\
+CS772 & Walker (alg curves); Thorpe (diff geometry); Singer and Thorpe (topology); Warren \\
+CS780 & Golub and van Loan; Demmel; Trefethen and Bau; (Halmos, Lang); Anderson (LAPACK), Higham (MATLAB) \\
+% CS792 & Hartley and Zisserman \\ 
+\hline
+\end{tabular}
+
+\begin{tabular}{ll} \hline
+Tool & Resource \\
+emacs & GNU Emacs Tutorial \\
+latex & Lamport, www.ams.jhu.edu/~ers/learn-latex/ \\
+svn & svn-book.pdf \\
+BibDesk & \\
+AIM@SHAPE & \\
+LAPACK & Anderson; www.netlib.org/lapack/ \\
+doxygen & doxygen\_manual-1.4.6.pdf \\ \hline
+\end{tabular}
+
+\end{document}
+
+
+
+
+
+
+***************************
+REGISTRATION: given two meshes, move them into correspondence;
+given two point clouds, move them into correspondence
+***************************
+
+tech report on the ctr08 format
+
+how to bridge a group of polygons, guided by a parent polygon
+    (see MiscPolygon.cpp for general case; ctr08ToMesh.cpp for 2-1 case)
+
+how to model shape at a branch
+    (intermediate contour approach in branch.tex, motivated by Cassinian oval)
+    (contours TO fragments, including branches of any kind 
+	      TO fragments with only m-1 or 1-m branches 
+	      TO fragments with all branches eliminated-i.e., reduced to 1-1)
+
+obstacle avoiding interpolation (motivated by intermediate curves)
+
+slice an existing surface optimally (which slice normal should be chosen? 
+      can Morse theory help?)
+
+******************************
+model Birmingham 
+    (USGS data, build its topology by hand using ctr08 format)
+******************************
+
+Fiedler segment a mesh, by weakening the mesh with curvature scissoring, then finishing
+	the cut with Fiedler:
+        1) mesh to weakened mesh, using curvature (use Princeton curvature code);
+        2) Fiedler cut of weakened mesh (code is ready)
+
+SIAM in 1 month: shape at a branch, Fiedler weakening
+SGP in 2 months: shape at a branch, Fiedler weakening
+CCCG in 3 months
+
+resolved action item: build a Cassinian oval figure 8 merely from input of 2 circles
+
+present action item (2/11/09): triangulate a branch: 3-1 case
+
+David: simple code for project that focusses on code, not reading;
+      - mesh segmentation, reconstruction, and registration are too mathematical
+        and require too much reading
+      - *a joint code-based image-analysis-based forensics project 
+        with Gary, Alan and Tracy may be best: 
+        have a meeting with Gary and Tracy; 
+        not based on Fiedler analysis (problem is weakness in the Fiedler literature);
+        alternative: segmentation and fitting of spam images, 
+                      followed by analysis of similarity?
+                      to analyse spam, technique would need to be automatic, not manual
+      - *fitting code project (independent of spam?)
+        e.g., read an image, sample a segmentation, fit a curve interactively as the
+        segmentation samples arrive; *allow Hermite tangents 
+        and derivative discontinuities (click with 1 or 2 depressed indicates drop in
+        continuity by 1 or 2) to be specified too; 
+        basically an aid to manual segmentation, indicating
+        how the curve will look (rather than just the data points);
+        *can we make it interactive enough so that as mouse moves the interpolating
+        curve is shown (before the mouse click committing to the sample)?
+        research issue: incremental update of the B-spline linear system with the
+        addition of a new point so that curve may be updated efficiently (even though
+        it depends on the entire pointset);
+        goal is a representation of the image boundary; comparison of two spam images 
+        based on these curve representations;
+        test data = spam images; architectural footprints; city maps;
+        thesis = open source and UML of (incrementally optimized) fitting code???
+                 spam image boundaries?
+        *given a curve, reduce to the minimal set of segments and control points that
+        represent this curve (within some error), 
+        so that two curves can be compared most easily and uniquely
+      - (work on introductory programming with Java and Python using
+        matrices and/or Bezier curves and/or projective geometry (HZ);
+        but at a freshman level and developing clean open-source)
+ 
+
+Lin: work on Munden project if it is funded; work to get a Google grant
+
+Sagar: open source of Bezier code, leading to classical cubic B-spline interpolation,
+       then Hermite interpolation, then contour code
+
+Come along for a trip along the shape fantastic.
+How about a glimpse of how to build an interpolating curve?
+Consider a sequence of $n$ points.
+
+website research areas:
+shape modeling
+
+research projects:
+reconstruction of meshes and smooth surfaces from point data; 
+reconstruction of meshes and smooth surfaces from curve data; 
+software suites for shape modeling;
+anatomical modeling;
+registration of multiple shape models;
+tangent space analysis of smooth surfaces, emphasizing dual representations
+  and the calculation of bitangency;
+smooth hulls and kernels;
+visibility analysis of smooth scenes;
+data structures for meshes;
+mesh semantics, emphasizing mesh segmentation;
+% intersection algorithms;
+% motion planning; bisectors; algebraic curves;
+Bezier and Hermite curves and surfaces;
+semantic mining of online image databases, emphasizing canonical views;
+multiple view geometry.
+
+CIS brochure:
+
+... perform research in shape modeling and computer graphics.
+Of particular interest is the reconstruction of meshes and smooth surfaces,
+anatomical modeling, mesh semantics, semantic mining of image databases, 
+and software suites for geometry.
+

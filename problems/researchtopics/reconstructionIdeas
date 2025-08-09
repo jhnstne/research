@@ -1,0 +1,53 @@
+Title: Modeling problems in reconstruction 
+
+1) Given two space curves, what is the most efficient way of transforming
+	one into the other and what is the associated cost?
+
+	Direct application: edge cost for MEST
+	Secondary application: morphing, model registration under motion
+	
+	References: Tagare (Yale), polygon difference metrics in computational
+		    geometry
+		    
+--) Determine topology from implicit equations (H.-P. Seidel idea):
+	Given three algebraic curves f1(x,y),f2,f3 on one section
+	and two curves f4,f5 on another section, determine topology
+	between them by forming the algebraic surface:
+	(1-z)*f1*f2*f3 + z*f4*f5		    
+		    
+2) Given n curves in a plane, what is the best way to 
+	connect them to optimally match a given parent curve?
+	
+	Direct application: building supercontour at a branch (bridge points)
+	Secondary application: morphing n objects into one object (cross-genus
+		morphing); matching (even if an object breaks up)
+		
+	References: curve matching (e.g., Barequet references)
+	
+--) Optimal triangulation between two contours: unwinding?
+		
+3) Given a planar hole with tangent ribbons along the boundary, 
+   design a B-spline surface that fills the hole, respecting the boundary
+   and tangent ribbons.
+   
+   	Direct application: canyon design
+	Secondary application: hole design
+   
+   	References: hole-filling literature, quadrangulation (Touissaint)
+	
+4) Can a second set of contours help the reconstruction?
+	What is involved in design from two sets of contours?
+	
+	References: Coons and Gordon surfaces.
+	
+5) Is error tolerance in vertical direction preserved after 
+	design of horizontal direction?
+	
+6)a) Decimate a planar polygon while preserving planar structure.	
+	But no good ideas here.
+
+	Direct application: efficient contour reconstruction from dense scans
+	Secondary application: topology-preserving data reduction
+
+  b) Semi-automated segmentation directly into curves, rather than polygons.
+	

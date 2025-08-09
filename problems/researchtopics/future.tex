@@ -1,0 +1,196 @@
+FUTURE PAPERS:
+
+journal version of common tangent paper:
+0) proof that our duality is a duality 
+	and comparison with other dualities (e.g., pictures)
+1) tangents through a point and polars
+2) visibility graph construction, including clipping of invisible tangents
+	and possibly an incorporation of Welzl's ideas
+3) shortest paths amongst curved obstacles discussion
+4) comparison with polygonal visibility graphs and discussion of smooth advantages
+	- could rip 3 and 4 out into an R&A article if we can elaborate
+	  sufficiently on 3-4, as well as elaboration of 2 for fullness of the present paper
+5) additional references: e.g., Welzl and Edelsbrunner
+6) implement implicit solution and analytically compare execution speed
+	with clipped Bezier (problem: have to implement Nishita and Sederberg,
+	or Sherbrooke and Patrikalakis)
+7) elaboration of umbra and penumbra (or this might be extended into a
+	separate paper)
+
+--------------------------------------------------
+
+journal version of bisilhouette paper could include this:
+Title: The bisilhouette of two surfaces
+1) material on rational Bezier representation of tangential surfaces, 
+	and removing negative weights
+2) some of the missing proofs
+3) bitangent developables of the same surface, for convex hull
+4) trimming common silhouettes of concave shapes: not interested in
+	bitangent planes between points that cannot see each other,
+	either because of a concavity within A or B,
+	or because of an intervening object C
+	
+--------------------------------------------------
+	
+paper incorporating subdivision curves and surfaces, rather than Bezier curves
+ - bitangent mask for two subdivision curves
+ - bisilhouette of two subdivision surfaces as a subdivision surface
+ - SMI2002
+ 
+--------------------------------------------------
+
+NSF: visibility analysis in dual space
+ONR: smooth motion (shortest path and quaternion spline); visibility testbed
+EPSCOR: ONR/NSF piggyback
+ 
+--------------------------------------------------
+
+SMI2002  (October)	     *bitangents of surface* (bisilhouette) (CAGD)
+			     bitangents of Chaikin subdivision curves (CAD)
+GI02     (October)	     *morphing 2 into 1*
+Computational Geometry/CAGD  smooth visibility graph
+ACMSE02 (December)	     *circle visibility graph*; comparison of smooth/polygonal visibility graph construction
+Dagstuhl 2002 (May)	     *bitangents*
+Solid Modeling (Oct-Nov)     tritangent planes of support     
+Eurographics (Feb)	     bitangents on S3, shortest paths in orientation space
+			     shadow lines on a surface; smooth soft shadows, especially penumbra
+Miscellany: 		     unrolling the bisilhouette (for motion)
+			     envelopes in dual space
+ 
+--------------------------------------------------
+
+- Java testbed
+
+- tritangent planes of support (see Koenderink)
+  for stably placing object down (e.g., robotics)
+  - this paper finds the bitangent planes of support, which are not stable
+  
+- lighting with the common silhouette: umbra, penumbra
+
+- shortest path motion
+ 	A natural solution may result from 'unrolling' the common silhouette.
+	This may be feasible since it is developable.
+
+- bitangents of subdivision curves and surfaces
+
+- smooth visibility complex (but see Baciu in PG2000, p. 105)
+
+- aspect graphs
+	The construction of an aspect graph for an environment of objects
+	defined by smooth surfaces (not polyhedra)
+	requires the bitangents of the objects.
+	CHECK SMOOTH ASPECT GRAPH LITERATURE.
+	DON'T WANT TO POSE THIS AS A SOLUTION TO ASPECT GRAPHS.
+	The common tangents help define the locations of changes of aspect:
+	the qualitative appearance of the objects has an abrupt change
+	since the occlusion of the objects changes.
+	
+	The aspect changes as the eye crosses the common silhouette.
+	This makes the construction of the common silhouette
+	a crucial operation for visibility analysis.
+
+- bitangents *on* a surface
+
+- do we have anything to say about silhouette (visibility from a 
+  point to a surface)?
+
+- convex hull of smooth surfaces (uses bitangent developables)
+	- see Koenderink 'Solid Shape' on support planes
+
+- computing the envelope of a 1-parameter family of planes.
+\begin{itemize}
+\item plane family in primal space $\rightarrow$ curve in dual space
+\item tangent lines of curve in dual space $\rightarrow$ 
+      generators of envelope
+\item directrix curves of envelope can be chosen as duals of two continuous
+      plane families along the curve in dual space, 
+      such as two plane families defined by the Frenet frame along the curve:
+      planes orthogonal to tangent and planes orthogonal to normal
+      (or planes orthogonal to binormal).
+\end{itemize}
+
+Given a one-dimensional family of planes in primal space 
+associated with a curve in dual space, we (think we) can find the envelope
+of the planes through the tangent space of the dual curve.
+
+Possible method: we want a family of tangent planes along the intersection
+	curve.  A plane is dictated by a normal (plus a point).
+	We could compute the normals of the tangential surfaces at every
+	discrete intersection point computed by Sederberg.
+	Then interpolate the normals to get a smooth approximating family of planes.
+	(This may involve interpolating a curve on the sphere, like quaternion
+	splines, if we use or need unit normals.
+	Try the simpler interpolation of non-unit normals first, though.)
+
+\begin{enumerate}
+\item Compute normals at all intersection points, on both $A^*$ and $B^*$.
+\item Interpolate the 4-dimensional points
+	$(N_i, -P_i \cdot N_i)$ using standard interpolation in 4-space,
+	say yielding $C^*(t)$ and $D^*(t)$.
+	Don't normalize the normals.
+\item Dualize $C^*$ and $D^*$ to curves.
+\item Alternatively, dualize discrete sampling of tangent planes in dual space
+	to points in primal space, and interpolate these points conventionally
+	to yield directrix curve.
+\end{enumerate}
+Explanation of (4):
+	For each of $A^*$ and $B^*$,
+	interpolate the discrete tangent planes at the intersection points,
+	producing a 4-dimensional implicit plane Bezier representation
+	$(x_1(t), x_2(t), x_3(t), x_4(t))$ representing the family
+	of tangent planes across the intersection curve.
+	$(x_1,x_2,x_3)$ are an interpolation of the normals
+	and $x_4$ is an interpolation of $-P \cdot N$.
+	(Recall that $(X - P) \cdot N = 0$ is implicit equation of plane.)
+
+Explanation of (5):
+	$C$ and $D$ are the directrix curves of the common tangent surface.
+	This is related to the dualization of planes to tangential surfaces
+	in the first step, but with a one-dimensional,
+	not two-dimensional, family of planes.
+	
+\section{Generalizations}
+
+A generalization of the definition of dualism:
+A hyperplane in $n$-space can be associated with a point in projective 
+$n$-space, since the implicit equation of the hyperplane has $n+1$ coefficients 
+and the point has $n+1$ coordinates.
+It is appropriate for the point to be in projective space,
+since any nonzero multiple of the hyperplane's equation represents the same plane.
+%
+\begin{defn2}
+A {\bf hypersurface} in $n$-space is an $(n-1)$-manifold (a surface of codimension 1).
+For example, curves in 2-space and surfaces in 3-space are hypersurfaces.
+A {\bf hyperplane} is a linear hypersurface.
+For example, lines in 2-space and planes in 3-space are hyperplanes.
+\end{defn2}
+%
+\begin{defn2}
+The hyperplane $a_1x_1+\cdots+a_nx_n+a_{n+1}=0$ % in $n$-space
+and the point $(a_1,\ldots,a_{n+1}) \in P^n$ are {\bf duals}.
+\end{defn2}
+%
+\begin{defn2}
+The {\bf dual of a hypersurface} $C(t_1,\ldots,t_{n-1})$ in $n$-space is the
+hypersurface \linebreak $C^*(t_1,\ldots,t_{n-1}) \subset P^n$ where the point 
+$C^*(t_1,\ldots,t_{n-1})$ is the dual 
+of the tangent hyperplane at $C(t_1,\ldots,t_{n-1})$. 
+% \cite[p. 54]{hartshorne}
+\end{defn2}
+
+
+\Comment{
+The full potential of the common tangent solution in dual space is realized 
+with surfaces.
+The dual space solution for common tangents between a point and curve is
+comparable to the standard solution.
+The dual space solution for common tangents between two curves 
+offers many more advantages, but still involves the intersection of two curves,
+which was the standard solution.
+(The main difference is that the intersection is now of parametric Bezier curves
+rather than implicit curves.)
+However, the difference between the implicit and dual solutions for surfaces
+are far more stark and obvious: rather than intersecting 2 surfaces
+in 4-space, we can intersect 2 surfaces in 3-space.
+}
+

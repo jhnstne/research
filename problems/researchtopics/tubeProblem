@@ -1,0 +1,24 @@
+given two sets of points, defining two boundaries,
+find the best tube that approximates them (or just its radius)
+	Requicha problem: feature definition for tolerance analysis
+
+quickly finding bisector of complicated (~100 objects) piecewise-conic scene
+
+RELATIONSHIP BETWEEN $\alpha$-SHAPES AND MEDIAL AXIS TRANSFORM?
+
+	$\alpha$-shape: intersection of full alpha-discs = 
+			complement(union of empty circles of radius 1/alpha) =
+			complement(union of maximal empty circles of rad 1/a)
+	MAT: 	object = union of circles with centers on medial axis 
+				and radius as defined by MAT = 
+			 union of maximal inscribed circles
+
+	similar to envelope
+
+	
+	also, distance from point to curve = radius of maximal empty
+		circle centered on point
+ 	      bisector = locus of center of maximal empty circle 
+			centered on point (similar definition to MAT)
+
+

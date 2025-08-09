@@ -1,0 +1,1244 @@
+\documentclass[11pt]{article}
+% \usepackage[pdftex]{graphicx}
+\input{header}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\headsep}{-.5in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\columnsep}{5mm}		% width of gutter between columns
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+% \markright{Workbook: \today}
+% \pagestyle{myheadings}
+
+\title{Research projects (\today)}
+\author{J.K. Johnstone}
+
+% ------------------------------------------------------------------------------------
+
+\begin{document}
+
+\vspace{-2in}
+
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+\section{Diary}
+
+\subsection{First entry, May-ish}
+
+A software library with which to conduct experiments is crucial.
+Our legacy could well be leaving an elegant software library for smooth surfaces.
+A technical report that acts as primer and users manual is a necessary complement
+to the software library.
+
+Code poet.
+Code as an elegant language, documenter, and experimental lab.
+
+\subsection{June 11, 2008}
+
+Forget about applications for a moment.
+Concentrate on extending the theory of tangential surfaces.
+Representing the tangent space of a Powell-Sabin functional surface in dual space,
+that is by a tangential surface, is worth studying, for example.
+Likewise for triangular Bezier.
+Possibly likewise for subdivision surfaces.
+Getting test models will be difficult, but ignore that or you will get stuck.
+Test models might be found by collaborating with other groups.
+
+It is worthwhile to continue exploring robotics and motion.
+
+\subsection{June 12, 2008}
+
+The work of Qin, He, Gu and Tau on smoothing a mesh with Powell-Sabin requires a deep
+understanding and large implementation of atlases and conformal structure, which relies on 
+computing homology groups, Ricci flow and so on.  Hopeless, since Gu and He do not release
+their software.  Look elsewhere.
+
+However, we should continue to explore Powell-Sabin splines for their elegance.
+{\bf Invite Hong Qin down for a lecture on Powell-Sabin splines.}
+
+{\bf Jorg Peters' smoothing of a mesh is more promising.}
+Although at some level it is motivated by subdivision surfaces,
+it does create Bezier patches, as in the SMI08 paper for quad meshes.
+Hopefully the triangular mesh version of this paper also uses Bezier patches
+(is it in 'Patching Catmull-Clark meshes'? No, this is another quadmesh idea, although
+still worthwhile.)
+If it doesn't, we could use Kobbelt's elegant quad-mesh generation to turn
+the triangular mesh into a quad mesh.
+See 'Smooth Patching of Refined Triangulations' for the triangular mesh case:
+uses Sabin's box splines so need to read these papers.
+
+Peters' work nicely involves eigenstructure, making it fun to study.
+{\bf May want to invite Jorg Peters to give a talk on this work.}
+
+See ~/class/792/literature/jorgPeters for all of these papers.
+
+Projects:
+1) Peters-style smoothing of a mesh: two varieties, quad-based and triangle-based
+2) Lin's Flickr analysis (Lin)
+3) both maximum flow and Fiedler vectors for mesh segmentation (Eric)
+4) Reeb graphs (Doug)
+5) downstream menus and marked-based AR for complex visualization (David)
+
+Algorithm: 
+a) given a mesh, build a set of NURBS patches, using Peters;
+b) given a set of NURBS patches, build a set of tangential surface patches.
+
+[See Grimm's researchStatement.pdf on Desktop about camera interpolation.
+Interesting problem that may be related to my quaternion splines.]
+
+\subsection{June 22, 2008}
+
+Understand B-splines, including the development of B-spline basis functions using
+repeated integration and convolution and the generalization to box splines, 
+as a moving window (best presented in Warren,
+although the intuition does not appear to be fully given; also look at Killer B's), 
+and the knot insertion algorithm: 
+all in order to understand Peters' use of B-splines and knot insertion in the Peters'
+patch paper (SIGGRAPH 2000).
+Peters' method is the most promising for the mesh to surface problem.
+
+The development of B-splines is well understood as a smoothing of the data points
+or data polygon.
+This might be a topic for general lectures about geometric modeling.
+
+Just as B-splines are an improvement over Bezier because they don't require worrying explicitly
+about continuity, Peters' patches are an improvement over triangular Bezier since they
+also do not require explicit worry about continuity.
+A disadvantage of Peters patches is that there are quite a few of them, typically four
+per triangle.
+This is probably the best one can do if insisting on exact interpolation of the mesh.
+However, it leaves open the issue of approximating the mesh by a smaller number of patches
+that match the topology of the mesh and work at the level of cylindrical handles rather than
+individual triangles.
+
+We also need to understand B-splines in order to generalize the theory of tangential surfaces
+to B-splines.
+
+See if Peters' student's code is compilable, without trying to understand it
+(as it is too confusing).
+
+\subsection{June 23, 2008}
+
+This is a great week to get things started more explicitly, either text or codewise,
+as the topics have been converging over the early summer, especially coming out of SMI08.
+
+The research issue should be tangent spaces, in particular tangential surfaces.
+This is elegant, deep, and we have a record of publication and implementation.
+There are many open problems, and the added advantage of building from recent research
+in surfaces, such as Peters patches and Powell-Sabin, let alone NURBS.
+Bitangency should not be the focus, although it might be used as a motivator
+(that is, why else would you want a dual representation? well, for one you have a succinct
+surface representation of the tangent space, superior to the hodograph).
+
+Action item (taken from Section 3.1): 
+expansion of the vocabulary of surfaces to rational Bezier, NURBS, triangular Bezier,
+Powell-Sabin, Sederberg piecewise-algebraic surfaces, Catmull-Clark, Loop.
+View tangential surfaces (dualization) like Mike Goodrich viewed parallelism in
+computational geometry: a tool to apply to other's work to leverage it further.
+
+Immediate action item: expansion of tangential surfaces to NURBS.
+
+Need to build the tangent space theory in tandem with building mesh-inspired smooth surfaces
+(or Gabrielides-contour-inspired smooth surfaces, but this is more of a deadend),
+so that we have test data.
+
+A far lesser action item for the fall is to complete the writeup of bridge-building
+(see Reconstruction of tubes and branches' below): a clean curve problem.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Implementation issues for tangential surfaces:
+
+Input: a set of independent patches, despite the fact that they will usually have some
+global continuity.
+(The patches will form surfaces of arbitrary topology so we cannot assume a tensor
+product structure, as in the unified format of UtahTeapotBodyUnified.cpt3.)
+
+Output: a set of independent patches in dual space representing the tangent space.
+
+This requires a retooling of the tangential surface software.
+Each patch has components in 3 dual spaces, and these components are imperfectly
+clipped so we have 3 superset patches in dual space per primal patch.
+(This explains why we unified the surfaces in our earlier test data, so that
+we only had to keep track of 3 superset patches for the entire surface.)
+There must be an elegant way of handling the collection of dual patches, since they do meet smoothly;
+perhaps in a Brep.
+
+Regardless, we need a more efficient clipping approach.
+The program gets into infinite or near infinite loops in clipping along isocurves.
+We should first refine this clipping (see next paragraph) and, if this fails,
+resort to non-pac, non-isocurve methods of clipping, such as true intersection with the box,
+which is bound to be less expensive.
+
+Should only clip x=+-2 when x range overlaps box, and so on.
+We test for overlap with box in patchHitsActiveBox, but then call defineClipIsoval
+which finds all extrema y=+-2/z=+-2 rather than only the planes that definitely overlap the patch.
+For example, if only the y-range is in the box, only clip against the y-planes.
+And if only y=2 overlaps, while y=-2 does not, then only find clip values for y=2.
+
+Also keep up with Lin's and David's work.
+
+\subsection{June 24, 2008}
+
+Need to get tangential surface software back in shape.
+
+How do you compute the AABB of a rational Bezier patch? See Manocha.
+Since we only want to make the intersections with planes that are absolutely necessary
+(to minimize the blowup in patches and clipping), it is probably easiest to explicitly
+test for intersection of the 4 hyperplanes in question (e.g., y=-2, y=+2, z=-2, z=+2)
+rather than worrying about the bounding box, since the bounding box calculation is
+less direct for rational entities (I think you need to project the 4d bounding box of
+the surface in projective space to find a good bounding box).
+
+Consider plane intersection with a rational Bezier patch [context: clipping tangential patches].
+[This is also necessary for silhouettes.]
+First consider line intersection with a Bezier curve, then line intersection with a rational curve,
+then plane intersection with a Bezier patch, then plane intersection with a rational patch.
+A primer may be in order.
+
+Goals: 1) coverage and efficiency of our tangent space encoding;
+       2) a monograph on tangent spaces and the encoding of various surfaces
+          (would get into projective geometry, derivatives, intersection, surface schemes;
+          can invite guests to learn more about Powell-Sabin [Hong Qin], Peters patch [Jorg Peters], 
+          triangular Bezier [Stephen Mann], NURBS [Les Piegl], implicit surfaces [Chanderjit Bajaj],
+          subdivision surfaces [Joe Warren]; should I host the seminar series in 2009-10?);
+       3) secondarily, work with 
+          - Lin (won't get a brighter student),
+          - David (sensible, best American I will see, interesting entree into popular forensics),
+          - Eric (best undergrad I will see, fun/important work with graphs/matrices/meshes)
+
+\paragraph{A primer on curve intersection}
+
+Intersection of two lines: cross product (most elegant solution using projective geometry);
+parametric/implicit solution (using two-point implicit representation of a line; the strength
+of this solution is its generalizability and dealing with finite segments).
+
+Intersection of line segment and Bezier curve is a special case of Bezier curve intersection,
+since a line segment is simply a degree one Bezier curve.
+
+Bezier curve intersection: use convex hull property (do the curves potentially intersect?)
+recursive subdivision (procrastinate by passing the question down to subsegments),
+and line intersection (once the curve segment is well approximated by a line segment,
+replace it by such and intersect).
+Can avoid bounding box tests going down using Sederberg(?)'s heuristic of subdivision depth.
+
+Intersection of infinite line and Bezier curve: restrict line to the bounding box (or hull)
+of the Bezier curve, then use intersection of line segment and Bezier curve.
+
+Computation of bounding box of Bezier curve:
+axis-aligned bounding box of Bezier is defined by extreme coordinates of control points;
+hull of control polygon is a more expensive alternative.
+
+Intersection of line segment and rational Bezier curve is a special case of rational
+Bezier curve intersection.
+
+Rational Bezier curve intersection: same approach as Bezier curve intersection.
+The bounding box and subdivision use slightly different algorithms.
+
+Subdivision of rational Bezier curve: subdivide the associated polynomial Bezier curve
+in projective space, then translate back from projective space to Euclidean space.
+
+Bounding box of rational Bezier curve: regardless of weights (as long as all are nonnegative),
+the curve still lies in the convex hull of its control polygon;
+therefore, the bounding box is computed exactly the same as for Bezier curves when 
+the weights are nonnegative;
+we are also interested in the case when weights are mixed sign: all bets may be off here;
+this may be the inherent problem with the instability of our conservative clipping algorithm
+for tangential surfaces, since intersection also relies on the convex hull property.
+
+We use extrema of PAC curves to find the isocurve clip parameters;
+can we evaluate when these extrema can be ignored?
+Do weights of mixed sign mess up the translation to PAC?
+
+Should we normalize the weights so they average to 1 before processing (e.g, for debugging ease)?
+The weights are rather extreme.
+
+Code refinement: Try translating the control points to (x/w,y/w,z/w) and evaluating the overlap of this
+new affine patch with the $a_i$ box.
+Once a patch is defined to be active in this way,
+also use this new affine patch at the more granular level of testing for each hyperplane's
+intersection separately, rather than automatically clipping at all four hyperplanes.
+
+\paragraph{Primer on projective space}
+
+For projective geometry (intersection with cross product, ...), rational Bezier curve as
+polynomial Bezier curve, translation as a matrix multiplication, perspective projection
+as a matrix multiplication, A in RGBA.
+
+\subsection{June 25, 2008}
+
+Action item for Eric: 
+build the Laplacian matrix (in LAPACK form, eventually; initially just as a 2d array) 
+associated with a mesh, using Heckbert's QE package to read the mesh 
+and iterate over vertices and edges.
+
+\paragraph{Primer on spectral partitioning of a graph}
+
+Source: Demmel web notes for CS267; Malik normalized cut; Gotsman SMI overview.
+
+{\bf My Powerpoint lecture on p. 90 of cs792lectureNotesSpring08.ppt covers this material well.}
+
+incidence, Laplacian
+
+Definition:
+
+Fiedler vector, algebraic connectivity
+
+mesh partitioning using Fiedler vector
+
+other Fiedler theorems
+
+\paragraph{Primer on encoding a mesh as a graph in a data structure}
+
+storage formats (obj, stl, princeton), translators (MeshLab), and readers (Heckbert, CGAL)
+
+breps (quadedge, winged edge, halfedge)
+
+Euler ops (Mantyla)
+
+accessing ops (vertex iterators, edges adjacent to vertex, ..., 
+               Heckbert code: 
+               CellVertexIterator, CellFaceIterator, FaceEdgeIterator, VertexEdgeIterator)
+
+\subsection{June 26, 2008}
+
+image analysis and semantic modeling, global features
+
+spectral mesh segmentation, construction of surfaces from meshes
+
+grasp planning and docking (what advantage does a smooth rep have?)
+
+Oliva and Torralba's spatial envelope is cool, but I need to brush up on Fourier analysis and spectra
+
+\subsection{June 27, 2008}
+
+Spectral analysis theme: Fiedler (spectral graph methods), PageRank, PCA, eigenfaces, 
+                         point and tangent masks of subdivision surface.
+
+Mesh as graph (note that FKU also interprets mesh as graph, but in order to build mesh).
+Graph as sparse matrix.
+
+Tools: LAPACK routine.
+
+----------------------
+
+Micro vs. macro theme: 
+
+micro: mesh smoothing at the level of a triangle (Peters patch, Mann triang Bezier, subdivision surf)
+macro: mesh smoothing at the level of a handle or slice (topological decomposition, contour recon)
+
+micro: local features in an image (SIFT)
+macro: global features in an image (GIST, spatial envelope)
+
+micro: adjancency-based methods for graph separators (e.g., Kernighan-Lin, sparspack: see Pothen paper)
+macro: spectral methods for edge and vertex separators of a graph (e.g., Fiedler)
+
+---------------------
+
+Graph theme: toroidal graph in FKU's optimal triangulation, 
+             visibility graph in shortest path robot motion,
+             mesh as graph in spectral decomposition
+
+\subsection{Week of June 23}
+
+Read about GIST for Lin, and spectral methods for Eric.
+Met with David, Doug(?) and Eric.
+Moved furniture.
+
+\subsection{July 7, 2008}
+
+Back from Seaside.
+
+Action items:
+\begin{itemize}
+\item Read literature, leading to invitation of 
+  Jorg (Peters patch, subdivision surface), 
+  Hong (Powell-Sabin, Ricci flow), 
+  Nina Amenta (point-based surface, reconstruction) or 
+  Cindy Grimm (camera control, surface editing) or
+  Les Piegl (NURBS)
+  a mesh segmentation fellow.
+
+\item develop textbook topic
+
+\item spectral analysis and its many facets
+\end{itemize}
+
+\subsection{July 8, 2008}
+
+Mesh as graph as (Laplacian) matrix as eigenvectors.
+
+\subsection{July 22, 2008}
+
+Note: recent entries have moved to my lab book 
+(with Bellsouth on the cover).
+
+A promising idea centers around something that we will call 'sparse smoothing'.
+Consider the translation of a triangle mesh into a smooth surface model.
+We could smooth the mesh a triangle at a time, as in Stephen Mann's
+circle of research
+(although this approach seems to have some inherent challenges
+as evidenced by the lingering difficulties with continuity and the pessimistic
+conclusions of some surveys).
+We could also smooth the mesh
+a quadrilateral at a time, as in Jorg Peters' research,
+where the quads are the result of one Catmull-Clark subdivision of the mesh.
+Yet, these methods yield at least one patch per triangle.
+Considering the number of triangle meshes with tens or hundreds of thousands of
+triangles or more, this is an intimidating number of patches.
+It seems that we should be able to leverage the higher degree and
+higher expressivity of smooth patches to build a model 
+from bicubic patches that has fewer patches
+than a model built from triangles.
+A reduction in the number of patches for a smooth model,
+when moving from planar to bicubic (say) patches, is by no means automatic 
+or in any way trivial, since smooth patches also have higher continuity demands.
+Nevertheless, a comparison of a polyhedral model of the Utah teapot (with --- triangles)
+with the classical bicubic model of --- patches is encouraging.
+We also recall that one of the main attractions of smooth models
+over triangle meshes,
+along with added continuity, is their terser expression.
+The design from triangle meshes of smooth models with far fewer patches
+will be the focus of the proposed research, and called sparse smoothing.
+
+A challenge with which the one-patch-per-triangle literature has 
+wrestled is the conflicting demands of the many patches that surround a triangle,
+resulting from interpolation and continuity constraints.
+A part of the solution has been to increase the patch's degree to introduce more degrees
+of freedom and increase the padding between two sides of the triangle
+with their conflicting demands.
+A possible interpretation is that the playing field of each patch
+is too narrow and the number of neighbouring patches too high.
+This challenge might be addressed by building fewer patches at a 
+higher level of abstraction,
+by changing some of the rules of the game.
+In other words, sparse smoothing may not only build fewer patches, an obvious strength,
+but also remove some of the congestion between patches and alleviate
+difficulties with continuity and high degree.
+
+Two lesser issues are worth pursuing, now that a new method is being developed.
+Peters' method requires normals as well as points, which
+is typically not directly available in a triangle mesh.
+Although there have been many methods for estimating normals on a triangle mesh,
+it is attractive to look for a method that only requires point input.
+Another observation is that the degree of the patches in one-patch-per-triangle
+methods can be quite high, bisextic(?) for Peters' method. 
+This is not a problem per se, but an opportunity to explore 
+methods that yield patches of lower degree.
+
+Unlike a subdivision surface, the smooth model is in closed form (a B-spline)
+and has few patches.
+
+Sparse smoothing requires one change to the rules of the game:
+we remove the requirement that each mesh vertex is interpolated.
+This is the cost that must be paid for the advantages discussed above.
+A shape model is built that is strongly influenced by the original triangle mesh,
+but approximating rather than interpolating.
+[Proof will be in the pudding: need good models after the implementation.]
+The fidelity of the smooth model to the mesh is controllable:
+the smooth model will lie within an error tolerance of the mesh.
+We view this as one of the problems with the one-patch-per-triangle approach:
+a too slavish adherence to the underlying mesh.
+The reward for replacing interpolation by approximation within a tolerance
+is a smooth model that is terse, bicubic, closed form and built from patches
+that reflect semantically meaningful regions of the mesh.
+
+The approach to sparse smoothing is as follows.
+A mesh segmentation yields semantically meaningful regions of the mesh
+(e.g., the legs, arms and tail of an armadillo).
+Each segment is contoured, guided by a skeleton, and then smoothly reconstructed from
+these contours.
+If a patch does not adhere closely enough to the mesh, the reconstruction process
+is repeated from a denser contouring until the smooth model satisfies
+an error tolerance from the original mesh.
+Neighbouring segments are blended at their boundary and holes are filled.
+
+A component of sparse smoothing
+is a decomposition of the mesh into semantically meaningful segments.
+
+Extractable code fragments to start implementing:
+- given a mesh, display it in various styles, with various interaction 
+  handles (e.g., rotation), and supplying info about vertex and face count (perhaps genus)
+  [can use MeshLab in the interim]
+- given a contour dataset, read/parse and display with various interaction handles,
+     perhaps using a BNF grammar parser 
+     [ctr08display suffices for now]
+- given a mesh, user-define a closed contour 
+     (as in Figure 5 of Lee05 'Mesh Scissoring' on dragon and Fig 14); 
+     this will be used to define a mesh segment
+- given a mesh and a closed contour, decompose the mesh into two submeshes along this ctr
+     [this code is embedded in MESH2CONTOUR/cutMesh.cpp]
+- given a mesh, compute the curvature of each vertex 
+     (using Alliez et. al. 03 SIGGRAPH),
+     in order to find the negative minima of curvature that define segment boundaries
+- given a mesh, find its segments 
+     (using negative-minima-of-curvature scissoring, Fiedler, or flow)
+- given a segment, find its skeleton (e.g., medial axis)
+     as a guide to unrolling the segment into a straight generalized cylinder
+- given a plane and a mesh, generate the intersection of the plane with the mesh, a contour
+- given a series of contours orthogonal to a curved skeleton, unwind into a series of
+  contours orthogonal to the z-axis (and hence parallel contours)
+- given two parallel polygonal contours (not necessarily ortho to z though), 
+  generate two smooth contours
+- given two smooth and parallel contours, generate a lofting
+- given two smooth and parallel contours, generate a bicubic patch 
+  (with how much continuity?)
+- given a smooth contour, generate a tangent ribbon across it (using neighbouring contours)
+- given neighbouring two segment patches, blend the region where they meet
+
+Point to ponder: how do you define a leg?
+
+If flow is used to define a leg, mustn't the flow be measured in the interior of the mesh?
+But perhaps the edge cut is smaller at the leg, even though this is only measured on the
+surface of the mesh. Look at flow (in graph theory texts) and flow in mesh segmentation
+papers.
+
+From mesh to segments (legs and handles).
+
+TEXTBOOK IDEA:
+On shape design: mesh segmentation, mesh data structure, contour recon, 
+subdivision surface smoothing, interpolation; 
+too diffuse a list: need to focus it, need to give it flow
+
+Programming nuggets for introductory programming [intro texts use silly toy examples]: 
+rotation matrix for properly orienting, aligning an object using PCA, 
+projective geometry for intersecting two lines, ruled surfaces as in Calatrava, curve interpolation)
+
+\subsection{July 28, 2008}
+
+We need to address undergraduate education and its challenges, but in a creative way.
+CS201 illustrates the problems vividly, too easily succumbing to a numbing exposition of syntax.
+We also have to introduce mathematics and programming together, since that is what CS is about.
+
+The model would be Matthias Felleisen's book 'How to design programs', 
+but centered around C++ rather than Scheme, and using graphics, meshes, 
+(and numerical computing, surreptitiously) as the motivator.
+That is, we want an elegant, well written, and fun book from which to learn programming.
+Abelson and Sussman is another role model.
+So a goal is Abelson-Sussman-and-Felleisen for algorithm design in C++.
+Other role models for technical content would be Hartley and Zisserman's
+Multiple View Geometry, for its elegant treatment of projective geometry,
+and Joe Warren's book on subdivision surfaces, for its elegant and deep exposure.
+So a goal is Hartley-Zisserman-and-Warren for undergraduates, where examples
+are used to expose students to the discipline without requiring a complete treatment.
+A role model for its ability to start from first principles and maintain curiosity
+and a grand vision is Roger Penrose's 'The road to reality'.
+Feynman's physics lectures would be another role model.
+
+Goal: an introduction to computer science and some of its key concerns (key data structures,
+key algorithms, key problem domains, key graphics ideas, key numerical computing ideas),
+in a way that tells a story, shows the depth of the subject, shows the playfulness of the subject,
+and captivates the learner.
+
+Topics:
+cross product as segue into both intersection and normals (and an elegant, magical mathematical result),
+(and good warmup of code);
+intersection as important operation through ray casting, then mesh slicing;
+mesh as fundamental data structure;
+*use of the matrix through Fiedler, Alliez curvature, mesh segmentation, rotation matrix, subdivision matrix*
+\begin{itemize}
+\item tetrahedron: simple file input and data format
+\item polynomials: arithmetic operators, efficiency concerns, array (of coefficients)
+      example: rational circle? cubic Bernstein such as 3t(1-t)^2 [cubic B-spline is too complex]
+      example: given a shooting direction (magnitude and direction of release), find the parabola;
+\item computer scientists count from 0 (e.g., array storage: ith element at i offsets, de Casteljau triangle and ith row encodes ith derivative)
+\item the circle: trigonometric operators, parametric curve, efficiency concerns
+*\item two points to a line, using projective geometry: vectors, inner product, 
+      cross product, so functions (createLine (point, point, line)), duality between points and lines
+\item cross product of two vectors: array as vector, function cross (3-vector, 3-vector, 3-vector);
+      program to draw the normal of a triangle (later applied to entire mesh)
+\item inputting a point in 2-space: dialogue, I/O, sanity check (in appropriate box)
+\item two lines to a point intersection, using projective geometry: vectors;
+      AxB is line L, CxD is line M, LxM is intersection;
+      how do we easily introduce building a line with cross product?
+      may need to warm up to it with implicit equation of line through parametric/implicit intersection
+\item ray casting: line to polygonal scene, line to mesh, game design
+\item normal of a triangle: cross product again;
+      area of a triangle using cross product
+\item linear interpolation (1-t)A + tB
+\item another way of expressing a parabola: de Casteljau on triangle, 
+      recursion (on linear interpolation); could follow the discussion of a parabola in polynomials
+\item reading a contour and a mesh: file input
+\item Euler operators: invariants, atomic actions, editing a structure
+\item representing a mesh using a matrix (Caltech's DEC): 2D arrays, matrix multiplication
+\item Chaikin subdivision: corner cutting, array manipulation, 
+\item random numbers: Heckbert shading, cards, blackjack
+\item plane intersection of a mesh
+\item graphs (toroidal) and minimal area triangulations (FKU), also shortest paths
+\item point interpolation with cubic B-spline
+\item visibility graph (Lozano Perez), shortest path, discretization, possibly configuration space,
+      reduction of geometric problem to graph problem (transforming the space of a problem)
+\item Fiedler spectral subdivision of a mesh
+\item rotation matrix
+\item mesh segmentation using Lee's scissoring: curvature, 1-ring of a vertex (for curvature tensor?)
+\item mesh salience (Hoffman article): divide and conquer, cognitive science
+\item Alliez computation of curvature?
+\item contour reconstruction: list of points
+\item tangents: first derivative
+\end{itemize}
+
+What is our hello-world program for graphics-based computation? (A: drawLineFromFile.cpp)
+In what environment will we display the code?
+What will be the first piece of code they see and interact with?
+Option 1: inputting two points.
+It must be embedded within an existing OpenGL program.
+Can it be interpreted?
+First a program that inputs two points with sanity check without graphical interface.
+Perhaps even before, a program that inputs two numbers and adds them.
+Then a program that inputs a point in 2-space with sanity check that is inside box.
+Then a graphical version of this program (with window slightly larger than box so that box boundary
+can be seen).
+Then a program that inputs a triangle, shows it and its computed normal.
+
+demo 0: add.cpp [add 2 integers]
+     1: onePt.cpp [input a point in 2-space within a box]
+     2: inputCoord.cpp [input a point using a function]
+     3: inputPt.cpp [input two points using yet another function]
+     4. drawLine.cpp [input two points and draw the line]
+     motivate by graphics:
+     5. drawLineFromFile.cpp [input two points from a file and draw the line]
+     motivate by game design ray casting (firing a gun, seeing what you see)
+     6a. intersectLines.cpp [intersect two lines, using projective geometry]
+     6b. intersectLines2.cpp [intersect two lines, using parametric/implicit]
+     7. normal of a triangle (followed later by normals of an entire mesh)
+     *reading a mesh*
+     reading a contour dataset
+     interpolating a curve
+     perhaps representing a mesh by a matrix
+     Fiedler decomposition
+     *Alliez curvature computation* (leading to Eric computing leg boundaries)
+     8. shoot a ray at a 3d triangle
+     9. shoot a ray at a 2d polygon
+     10. shoot a ray at a Bezier curve
+
+This text may also leave me with a collection of clean software units, such
+as 'how to read a contour', 'how to intersect a ray with a polygon',
+'how to intersect a mesh with a plane', 'how to triangulate two contours'.
+
+Action item: revisit the generalized cross product.
+
+July 31, 2008
+
+A standard approach to intersection is to substitute a parametric representation
+of the first object (e.g., a line) into an implicit representation of the second
+object (e.g., the other line).
+We can illustrate this approach on the intersection of two line segments in 2-space
+[then on the intersection of a line segment and a triangle in 3-space].
+(Define implicit representation f(x,y)=0 of a curve in 2-space.)
+(Define implicit representation of a line in 2-space.)
+(Define parametric representation of a curve in 2-space.)
+(Define parametric representation of a line in 2-space, that is, linear interpolation.)
+Let the two line segments be $PQ$ and $RS$.
+We have seen that the coefficients of the implicit equation of $PQ$
+can be found using projective geometry as $encoded(P) \times encoded(Q)$.
+That is, the implicit representation of $PQ$ is $f(x,y) = (x,y,1) \cdot (encoded(P) \times encoded(Q)) = 0$.
+The parametric representation of $RS$ is $L(t) = R + t(S-R)$.
+Substituting the parametric line into the implicit line
+yields the univariate equation (equation in one unknown) $f(L(t))=0$ that can easily be solved for $t$.
+In particular, if the implicit representation is $ax+by+c=0$ and the parametric representation
+is $(p_x + tq_x - tp_x, p_y + tq_y - tp_y)$, the solution is easily verified (exercise) to be
+$t = (c+ap_x + bp_y) / (ap_x - aq_x + bp_y - bq_y)$, and the intersection $L(t)$ is at infinity
+(reflecting parallel lines) if the denominator is zero.
+This intersection lies on the second line segment if $t \in [0,1]$.
+% Given a point on the line L and a line segment on this line L, does the point lie on the line segment?
+% Can find by solving for the parameter t of this point and comparing to [0,1], or by testing distances
+% from the endpoints of the line segment.  Exercise: develop both solutions.
+% We provide the latter solution now.
+The intersection $L(t)$ lies on the first line segment $PQ$ if it lies between $P$ and $Q$,
+or equivalently if it does not lie on the outside of $P$ or the outside of $Q$, 
+or equivalently if $\|Q - L(t)\|^2 <= \|Q - P\|^2$ and $\|P - L(t)\|^2 <= \|Q - P\|^2$.
+(We use squared distance to avoid expensive square roots.)
+intersectLines2.cpp gives code for this solution.
+
+develop intersectLines2 code
+develop line intersect triangle code
+think how to store the mesh: probably hide the quadedge software in a library;
+cannot use Heckbert for text, so perhaps use Taubin which could be combined with a DEC matrix format requiring
+only 1-ring (neighbours of a vertex)
+
+\subsection{SIGGRAPH, Day 1, August 12, 2008}
+
+Motivated by the Line Drawings from 3D Models course organized by Rusinkiewicz,
+which was the highlight of Day 1.  (Ed Catmull's wonderful keynote yesterday on
+the utmost value of people in a company, the
+importance of honesty about one's work, and of equality in a work situation, and
+of these things for the nurturing of creativity, was pre-Papers so Day 0.)
+Certain lines on surfaces convey shape, perhaps even better than the entire
+model, so they factor into an understanding of shape.
+Silhouettes and suggestive contours are also fun and elegant,
+as well as exercising one's capacity in differential geometry.
+Speaking of which, Rusinkiewicz, a beautifully clear speaker, explained
+the second fundamental form in an intuitive way for the first time: the 
+curvatures of normal curves don't vary willy-nilly, but are controlled
+by a symmetric matrix according to K(s,t) = (s,t)(e f\\f g)(s,t), 
+where (s,t) is the parameterization of vectors in the tangent plane,
+and the symmetric matrix is called the second fundamental form.
+When it is diagonalized, equivalent to a rotation of the coordinate system,
+it yields the principal curvatures [see pp. 85-87 of lines-notes.pdf].
+
+Silhouettes as zero-crossings of n.v are a good place for 
+simple GPU programming, perhaps in 780.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Representation of smooth surfaces}
+
+This and the following topic (analysis) are the major thrusts of my recent research.
+(Old thrusts included intersection, blending, cyclides, quaternion splines.)
+The domain of the research is smooth surfaces.
+
+A smooth surface is typically parametric, typically B-spline or Bezier, typically cubic,
+at least $C^1$-continuous, occasionally $C^2$-continuous, 
+has the ability to represent the entire tangent space (and other derivatives) in closed form
+(on a per-surface level, rather than a per-point level).
+
+Smooth surfaces are contrasted with triangle meshes, the most popular representation in graphics 
+and computational geometry.
+We want to extend algorithms for meshes to smooth surfaces, while preserving efficiency,
+elegance, robustness, and relative simplicity (i.e., usability).
+
+% ------------------------------------------------------------------------------------
+
+\subsection{Powell-Sabin splines}
+
+Powell-Sabin splines might be used to translate directly from a mesh to a $C^1$ quadratic surface,
+using Hong Qin's work [highly unlikely, since this requires a deep understanding of algebraic
+topology, including cohomology and Ricci flow].
+Alternatively, we could translate directly from functional scattered data or functional meshes
+to smooth surfaces using the original functional version of Powell-Sabin (which is more elegant
+and understandable); perhaps terrain-based contours could also be fit into this model.
+
+We would then need to add Powell-Sabin splines to our vocabulary of surfaces
+for which we can compute robust dual representations of tangent space.
+
+Reading list: Powell and Sabin, Piecewise Quadratic Approximations on Triangles, 
+ACM Transactions on Mathematical Software, 1977.  (excellent introduction)
+
+Dierckx, 1997, Normalized ... (formulae for Bezier ordinates in the functional case)
+
+{\bf Action item: understand Powell-Sabin splines.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Construction of smooth surfaces from meshes}
+
+\subsubsection{Peters patches}
+
+% ------------------------------------------------------------------------------------
+
+\subsubsection{Topology-based smoothing: mesh as suggestion}
+
+Students: Prasenjit Chaudhury, Eric Frees, Doug Ross
+
+Explicitly organize the mesh into handles homeomorphic to a cylinder, based on the topology
+of the mesh, using mesh segmentation ideas to get at mesh topology.
+Organization is at the level of tubes rather than triangles.
+We might be able to join the tubes using blending surfaces.
+Can end with shape editing to refine the shape if necessary.
+
+This method is inherently approximating, not interpolatory: it uses the mesh as a guide
+to build a smooth surface (e.g., for entertainment or for testing).  
+*(We will need to think of how to motivate the lack of interpolation for practical purposes.)*
+
+Topological decomposition into tubes (homeomorphic to a cylinder, with a known backbone).
+Reconstruction of each tube using contour methods.
+
+Necessary input for level 1A (analysis of tangent spaces);
+and this happened to be our original motivation to study this problem,
+although it is clearly an important problem independently.
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Topological analysis of a mesh I: spectral mesh segmentation}
+
+Potential student: Eric Frees
+
+action items for Eric:
+
+{\bf 
+0) read about eigenvalues in a linear algebra textbook (e.g., Lang or MIT text);
+1) learn about spectral decomposition from Demmel website, Shi/Malik paper, and Katz/Tal paper;
+2) read about maximum flow in Cormen/Leiserson/Rivest/Stein 'Intro to Algorithms' textbook.
+}
+
+Use spectral bisection to find graph cuts that decompose a triangle mesh into
+meaningful components topologically.
+
+Also use network flow to find graph cuts.
+
+Overarching goal: build a smooth surface from a mesh, without using subdivision
+surface or triangular Bezier patching methods
+  - these methods are too low-level
+  - there are methods to build a smooth surface from a mesh topologically
+    equivalent to a cylinder (in particular, contour methods, but the basic
+    principle is that tensor product surfaces need a decomposition into
+    quadrilateral components)
+  - basically we want to find the axis of this component, untwist it until
+    it becomes straight, sample it in planes, and use tensor product techniques
+    to reconstruct these samples smoothly
+
+Crucial subgoal: Given a triangle mesh, isolate regions topologically 
+equivalent to a cylinder.
+
+Discuss mesh decomposition papers (Gotsman SMI03 review, Katz/Tal SIGGRAPH03, 
+Hart Morse paper).
+
+Use spectral decomposition of the mesh to identify branches.
+- Read about spectral decomposition in Gotsman, Demmel, Shi/Malik and Zhang.
+- Understand graph cuts and network flow.
+- Define Laplacian matrix.
+- Understand Fiedler vectors (could read Fiedler sources).
+- Explore METIS software (U. of Minnesota)
+
+Use meshlab to clean and visualize meshes.
+
+Use QEviewer to read and visualize meshes, using quad-edge format.
+- Read about Euler operators in Mantyla/Sulonen, Weiler, Mantyla text (Ch. 9).
+- Discuss boundary reps and quad-edge, in general terms as in O'Rourke text
+  (w.o. referring to Guibas-Stolfi, since just using brep as a black-box tool).
+- Download version of QEviewer.
+
+Action item: read Gotsman SMI03, Katz/Tal, Demmel notes; explore METIS;
+             download Meshlab
+
+Could discuss spectral techniques with Roy and Shih in Mechanical Engineering.
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Topological analysis of a mesh II: Reeb graph}
+
+Student leading this project: Doug Ross
+
+The Reeb graph is an excellent shape descriptor for topology.
+
+Reeb graphs, Morse complex, medial axis and other shape descriptors.
+
+Action items (Doug): 
+1) implement Reeb graphs; 
+2) read the SPM and SMI papers on segmentation and Reeb graphs;
+3) look at Michaela Spagnuolo's Focus3d project on mesh segmentation (same people as AIM@SHAPE)
+
+Then use the Reeb graph for shape matching and correspondence.
+Use the shape descriptors to correspond two similar shapes.
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Topological analysis of a mesh III: medial axis}
+
+Lin suggested this approach (although it is very popular in the literature).
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Cutting tubes into contours}
+
+Basic version is 771 HOMEWORK: cut a mesh by a set of parallel planes, yielding contours.
+
+Full version is more difficult: given a mesh and its topological decomposition into tubes,
+build a set of contours for each tube such that each contour is orthogonal to the tube's
+skeletal curve.
+
+Recall the Greek krater vases in the High Museum of Art's Louvre exhibit; in particular
+their handles, and the shape of the vase near the connection of the handle with the main body;
+this motivated treating the handle as a tube and using contours orthogonal to the tube's
+skeletal curve, since a traditional slicing by parallel contours for the entire body
+is clearly flawed.
+
+{\bf The Greek-vase (krater) insight is a promising action item to work on in the near future.
+It requires topological analysis, skeletal curves, blending, transformation of skeletal curves,
+and contour reconstruction.}
+
+START HERE
+
+Given a triangle mesh, a normal direction, and a sampling rate,
+intersect the mesh by planes with this normal at this sampling rate
+to generate a collection of contours.
+
+Build contours from a mesh (with no implied contour triangulation necessary).
+(Not a research problem, but a good tool.)
+This is a simpler version of our mesh2contour software.
+
+A related problem is intersection of a plane with a Bezier surface
+(see 'Tritangent planes').
+
+% ------------------------------------------------------------------------------------
+
+\subparagraph{Stereolithography}
+
+Applications of contour reconstruction techniques to stereolithography
+and tissue engineering.
+There seems to be some interest in matrix scaffolds and tissue engineering (in particular,
+tissue regeneration and repair) from the BioMatrix Engineering
+and Regenerative Medicine (BERM) Center.
+Pilot grant proposals of \$30,000 were requested in Spring 2008.
+Dr. Timothy Wick (Chair of BME, tmwick@uab.edu) is co-director.
+
+% ------------------------------------------------------------------------------------
+
+\subparagraph{Parsing of contours}
+
+Use formal parsing methods (LEX/YACC/BISON/ANTLR) to parse the BNF grammar 
+  for the new ctr08 contour format
+
+A grammar and parser could also be written for the Washington format,
+gaining access to the polyhedral teapot model.
+
+Reminiscent of the BNF grammar for Berkeley Unigrafix format by Seth Teller.
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Reconstruction of tubes and branches: refining Gabrielides}
+
+Reference: ctr08display.cpp and ctr08text.tex
+
+Action item: writeup of merging/bridging two curves (actually, finding bridgeheads) by pincering.
+(See bridgebuild.tex and testMerge.cpp/testSkin.cpp.)
+
+Lesser action item: writeup of lofting between two curves that respects an underlying mesh: 
+given two curves interpolating/smoothing two slices of a mesh, 
+build a lofting that respects the shape of the mesh [context: smoothing a mesh
+using topologically-based contour reconstruction]; this is similar to our smooth contour
+reconstruction work in Vis95, so only worthy of being extracted into a journal version for archiving.
+
+\subparagraph{Bezier version of Gabrielides Coons holes}
+
+Want a uniform data representation for the smooth surface.
+Gabrielides uses Coons in the holes.
+Solution: find Bezier control net of each Coons patch using Farin 'Control Nets from
+Coons Patches' in Farin textbook (Section 21.2 of 3rd edition):
+basically build a Coons patch of the boundary control polygons.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{A monograph on meshes and smooth surfaces}
+
+\begin{itemize}
+\item breps for meshes-- and surfaces? (Euler ops, quad-edge, winged-edge)
+\item spectral analysis
+\item graph cuts
+\item medial axis
+
+\item mesh cleaning
+\item mesh decimation (Garland-Heckbert)
+\item mesh decomposition
+  - spectral decomposition and graph cuts; Morse theory
+  - medial axis
+\item meshes from samples (Amenta, Edelsbrunner, Dey)
+\item micro-level quadrilateral decomposition of meshes (Kobbelt)
+\item macro-level quadrilateral decomposition of meshes (our idea)
+\item curve interpolation (including straight line components)
+\item ruled surfaces and lofting
+\item derivative estimation
+\item Hermite patches
+\item contour reconstruction
+\item triangular Bezier techniques
+\item subdivision surfaces
+\end{itemize}
+
+% ------------------------------------------------------------------------------------
+
+\subsubsection{Textbook on an unknown topic}
+
+Duality.
+Projective geometry.
+Kernel.
+Numerical computing methods (780).
+Curves and surfaces (771).
+Tangential surfaces (NSF grant).
+Meshes (792).
+SFM (771 version 2).
+
+Role models: primer on projective geometry; Feynman lecture notes; van Loan; HZ textbook.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Ruled surfaces}
+
+Build a ruled surface from two directrix curves, or from a single directrix curve
+using tangents or normals.
+Visualize this ruled surface.
+Do other computations from my apocryphal CAD paper.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Analysis of smooth surfaces}
+
+\subsection{Analysis of tangent spaces}
+
+For smooth (curves and) surfaces.
+Dual representations, to encode tangent space as a surface,
+to reduce bitangency to intersection, to reduce silhouette to intersection, 
+to reduce tritangency to intersection, to reduce kernel to hull.
+
+Action item: expansion of the vocabulary of surfaces to rational Bezier, NURBS,
+triangular Bezier,
+Powell-Sabin, Sederberg piecewise-algebraic surfaces, Catmull-Clark, Loop.
+View tangential surfaces (dualization) like Mike Goodrich viewed parallelism in
+computational geometry: a tool to apply to other's work to leverage it further.
+
+Action item: address efficiency, probably using parallelization: 
+even the ProtoPear takes several minutes to compute just the tangential surface.
+
+% ------------------------------------------------------------------------------------
+
+\subsubsection{Silhouettes}
+
+Interactive computation of silhouettes using tangential surfaces
+
+This may require some parallelization of tangential surfaces.
+
+% ------------------------------------------------------------------------------------
+
+\subsubsection{Bitangency}
+
+Computation of bitangency.
+Computation of silhouettes using dual representations.
+Computation of shadows.
+
+Why do we need bitangency, in practice?
+
+Action item: interactive computation of bitangent developables using tangential surfaces.
+May require refinement of our use of PAC's and parallelism.
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Grasp planning and docking}
+
+Bitangency reveals pockets in a shape, which can be sites for molecular docking
+or sites for grasping an object by a robot hand.
+This deserves further investigation.
+
+% ------------------------------------------------------------------------------------
+
+\subsubsection{Tritangency}
+
+Construct the tritangent plane of a smooth model.
+Prerequisite: a smooth model of a stool with three legs, so smooth modeler
+(perhaps from contours).
+The three-legged model can be viewed as the stages of man (4 legs, 2 legs, 3 legs).
+
+The tritangent plane would be a stable placement for putting an object down on a table.
+
+Requires a cleanup of the tangential surface literature,
+and a clean routine for intersection of a Bezier surface by a plane.
+Requires smooth models.
+
+% ------------------------------------------------------------------------------------
+
+\subsubsection{Kernel from hull}
+
+\paragraph{Formalization of the reduction of kernel to convex hull}
+
+This revisit is motivated by the SIGGRAPH 2007 paper on hidden point removal from point sets, 
+using spherical inversion and reduction to convex hull.
+
+Just as the reduction of the hidden point removal problem to convex hull
+motivates convex hull algorithms robust to noise,
+the reduction of kernel to convex hull
+motivates convex hull algorithms for cuspy curves.
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Surface kernel}
+
+Action item: implementation of my ideas (tough!).
+
+Given a smooth surface, compute its kernel.
+
+We have a full implementation of the curve kernel (which we should release),
+but no implementation of the surface kernel.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------------------------------------------------------------------------
+
+\paragraph{Textbook on tangent spaces}
+
+\begin{itemize}
+\item Representing tangent spaces: hodographs, tangential surfaces, Catmull's normal surfaces.
+\item Estimating tangent planes (i.e., normals).
+\item Point-hyperplane duality.
+\item Projective geometry (esp. for tangent representation).
+\item Silhouettes.
+\item Developables.
+\end{itemize}
+
+(Vulnerable to coverage attacks, as experienced in tangential curves paper.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+
+\section{Tailoring views and site location for vacation planning}
+
+Student leading this project: Lin Yang.
+
+User-tailored views, based on stated or learned preferences
+(e.g., architecture, wide-open spaces, trees, animals, dense crowds, tall buildings)
+
+Image descriptors.
+
+Visual features, local and global.
+
+Similarity metrics.
+
+\subsection{Similarity matrices and GIST for analysis of tourist attractions}
+
+% ------------------------------------------------------------------------------------
+
+\subsection{Extracting camera motion using structure from motion for motion definition}
+
+Given a video stream from a videocamera,
+use SFM techniques to extract the motion path of the camera center.
+This allows videocameras to be used to input motion paths in a natural way,
+such as for walkthroughs of Campbell or tours of UAB.
+
+Use Final Cut Express to extract video streams from a video (for SFM analysis).
+While you are at it, create a home movie.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------------------------------------------------------------------------
+
+\section{Augmented reality for computer forensics visualization}
+
+Student leading this project: David O'Gwynn
+
+\subsection{Marked based AR}
+
+Working title: Hands-only [alternatively, marked-based?] AR 
+               that incorporates and adapts to the environment (remaining sensitive to it)
+               and utilizes downstream menus, 
+               its application to the 3D visualization of complex datasets, 
+               and its proof of concept with a forensic dataset.
+
+Develop a hypothesis of the proposed AR research:
+
+Moving upstream menus downstream to the point of focus of the visualization.
+
+OR
+
+Incorporating the environment into the AR setup (e.g., desk, wall, Coke bottle)
+
+OR
+
+Using hands-only AR to interact with a 3D shape.
+
+Should be independent of the forensics application, provable, and applicable to
+a broad array of AR applications.
+
+\subsection{Touch screen based AR and visualization}
+
+Potential for working with a Microsoft touch screen.
+
+\subsection{Visualization for computer forensics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Software library for curves and surfaces}
+
+% ------------------------------------------------------------------------------------
+
+\subsection{Areas of coverage}
+
+\begin{itemize}
+\item Bezier curves
+\item Bezier surfaces
+\item quaternions and quaternion splines
+\item tangential curves
+\item tangential surfaces
+\item quadedge
+\item winged edge
+\item contours
+\item piecewise algebraic curves
+\item shadows
+\end{itemize}
+
+% ------------------------------------------------------------------------------------
+
+\subsection{Doxygen documentation of Cbin libraries}
+
+% ------------------------------------------------------------------------------------
+
+\subsection{Obstacle-avoiding interpolation}
+
+Given a set of data points in the free space of a 2D room full of obstacles,
+build an interpolating curve that avoids the obstacles.
+
+      - there is an optimization-based approach at SIGGRAPH from 
+      (Sword and Magic) Helmut Pottmann
+
+      - I am looking for something analogous to Farin's interpolating cubic B-spline design
+
+Simpler variant that arises in the construction of bridges:
+Given a simple polygon and vertex tangents, build a {\em simple} curve that
+interpolates the polygon vertices and honours the tangents at these vertices.
+
+Object-avoiding interpolation would be useful in the construction of flythrough paths.
+It could also be useful in orientation planning, although the avoidance of orientation
+obstacles is higher-dimensional search for a path in a 3-manifold in 4-space, 
+amongst obstacles.
+
+% ------------------------------------------------------------------------------------
+
+\subsection{(Mixing curves with straight lines; interpolation with rectilinear parts)}
+
+771 HOMEWORK
+
+Interpolating a set of points with some straight line components.
+That is, some consecutive pairs of points would be marked to indicate that the connecting
+segment should remain a straight line.
+This is reminiscent of creases in a subdivision surface: we want to purposely leave some parts
+of the model less smooth.
+(This is a project, not a research problem, since it is well understood that
+the straight line components would be linear B-splines, and repeated knots would
+be used to incorporate the linear components with the cubic components.)
+
+Useful in reconstructing architectural footprints: e.g., the HUD building in arch/hud
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------------------------------------------------------------------------
+
+\section{Quaternion splines}
+
+\subsection{$S^2$ and $S^3$}
+
+Pull together a formal and final technical report on $S^3$, with a warmup on $S^2$, including 
+1) rational maps to S3, 
+2) given a set of samples on S3, find the furthest point of S3 from these samples,
+3) bisectors of curves on S3, and
+4) bitangents of curves on S3.
+
+% ------------------------------------------------------------------------------------
+
+\subsection{Extension to rational quaternion splines}
+
+We have a method for building a rational quaternion spline that interpolates
+a set of quaternions.
+But we cannot control the derivative at its endpoints, which would be necessary
+to build a larger spline by divide and conquer from a large sample,
+or to introduce these quaternion splines as full-fledged members of a modeling library.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------------------------------------------------------------------------
+
+\section{Next brilliant topic}
+
+% ------------------------------------------------------------------------------------
+
+\subsection{One more amazing insight}
+
+% ------------------------------------------------------------------------------------
+
+\end{document}

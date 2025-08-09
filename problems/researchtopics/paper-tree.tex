@@ -1,0 +1,611 @@
+\documentstyle[12pt]{article} 
+\newcommand{\DoubleSpace}{\edef\baselinestretch{1.4}\Large\normalsize}
+\input{/rb/jj/texlib/pageformat-double.tex}
+\setlength{\oddsidemargin}{-.25in}
+\newcommand{\Comment}[1]{\relax}  % makes a "comment" (not expanded)
+\begin{document}
+\pagestyle{empty}
+
+\centerline{\bf {\em CONFERENCES}}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Cornell Workshop & Sept. 23 (1 page abstract) & Quaternion curves \\
+\hline
+Solid Modeling '95 & Nov. 1 (full paper Nov. 15) & Quaternion curves (for swept surfaces) \\
+\hline
+Graphics Interface '95 & Oct. 31 & Quaternion curves (for animation) \\
+\hline
+CG Int'l '95 (Virtual Reality) & Dec. 1 & Cor/sag/trans reconstruction \\
+\hline
+Eurographics '95 & Jan. 9, 1995 & Cor/sag/trans reconstruction \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{2in}
+
+\centerline{\bf {\em GRANTS}}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+NSF  & Swept surfaces & \\
+\hline
+NASA & Unstructured grid visualization & with Ken \\
+\hline
+Joint NSF & Reconstruction of cor/trans/sag & with Ken \\
+\hline
+Cardiology Consortium & 3D Modeling of the Heart & \\
+\hline
+Minority Female Fellowship (NSF?) & Medical informatics & Ken, Warren \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\centerline{\bf {\em INTERDISCIPLINARY RESEARCH}}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Cardiology & Pohost,Blackwell & Surface models for wall thickness \\
+& Coghlan, Singleton & Reconstruction of coronary arteries \\
+& & Eigenvector-based triangulation \\
+\hline
+Virtual surgery & Grimes & \\
+\hline
+Neurosurgery & Guthrie, Fast, Freund & \\
+\hline
+Biomedical Engineering & Stokely & \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\centerline{\em Geometric modeling}
+
+Our present emphasis in geometric modeling  is on the swept surface.
+Geometric modeling is the area of graphics concerned with the 
+creation of models of solids for display and analysis.
+Swept surfaces abound in machining, robot motion, ship/aircraft/auto design,
+and animation.
+Simple swept surfaces (e.g., extruded and revolute surfaces) are available 
+in solid modeling systems, but arbitrary swept surfaces are not.
+The first goal of this project is the full incorporation of a larger class of
+swept surfaces (including at least the arbitrary sweep of simple curves
+such as lines and circles) into solid models.
+This requires concentration on surface intersection and other Boolean operations
+on solids involving swept surfaces.
+A second goal is the development of powerful tools for the creation and
+analysis of objects sweeping through space, which demands work on 
+representational issues, sweep generation, interference detection, volume
+and other properties.
+Current and past research includes work on rational Bezier 
+representations of swept surfaces, animation keyframing, 
+blending surfaces, ruled surfaces, 
+canal surfaces, cyclides, and quadrics.
+
+\vspace{2in}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Swept surfaces & Ruled surfaces &  & Journal final version \\
+\hline
+Swept surfaces & Quaternions: drawing on the sphere & Jimbo & Fall conference \\
+\hline
+Swept surfaces & c-r-o Bezier swept (esp. ringed) surfaces & Jimbo & Spring conference \\
+\hline
+Swept surfaces & Ruled-ruled (ringed/ringed) intersection & & Fall conference \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\centerline{\em Biomedical Visualization and Image-guided Therapy}
+
+The raw data of medicine is CT and MRI images.
+Many areas---such as cardiology, neurosurgery, plastic surgery, 
+and anatomy---can benefit from reconstruction of this CT/MRI data into
+3D surface models.  These models can be used to aid diagnosis,
+plan (before) surgery, and guide (during) surgery.
+The focus of this project is the creation of accurate and measurable
+3D models of anatomy from CT/MRI, using techniques from geometric
+modeling and computer aided geometric design.
+
+\vspace{2in}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Visualization & Reconstruction: cor/trans/sag Coons [brain atlas] & Ken & Spring conference \\
+\hline
+Visualization & Mensuration: arc length, surface area, volume & Stokely & \\
+\hline
+Visualization & Flexible models: quadric control nets [brain atlas] & & \\
+\hline
+Visualization & Area refinement of Bezier patch [reconstruction] & Woo/Chirikjian & \\
+\hline
+Visualization & Model based segmentation of liver & Ney/Berland?? & \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Solid modeling & 2-line representation of hyperboloid & Shene & Fall journal \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Title		& Conference paper	& Journal paper 
+	\\ \hline \hline
+% ****************************************************
+\Comment{
+Sorting		& SIAM87	& SJOC (long!) \\ \hline
+Coordinated Crawling & CGI89	& Visual Computer \\ \hline
+Plane-Quadric Intersection  & - - - & Computers and Graphics \\ \hline 
+Ringed/Cyclide & Stony, SIAM91	& CAGD \\ \hline  
+	% (subm. 11/20/91, accepted 7/8/92)
+Plane/Revolute & & Computers and Graphics \\ \hline
+Blending of cones by cyclides & IMA & \\ \hline
+Bisector: computing + curve-curve & & IMA \\ \hline
+Natural Quadrics & ACM Solid Mod '91	& TOG \\ \hline
+	% subm. 9/9/91, revised version submitted 6/9/93
+	% to Rossignac	
+}
+%
+Ruled Surface	& Math and Comp '89 & CAD \\ \hline
+	% (subm. 9/10/91) 
+	%  to John Woodwark
+	% revised version sent to L. Piegl on 9/29/92
+Distance Rep 	& DIMACS,Wayne	& Int.J.CG \\ \hline
+\end{tabular}
+\end{table}
+% Ruled/ringed intersection & tech report & \\ \hline
+% 16. sorting of Bezier (thesis methods) \\ \hline
+
+\clearpage
+
+\begin{itemize}
+\item
+{\bf Ruled surfaces}
+\begin{itemize}
+\item as the most primitive swept surface
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|}
+%
+\hline
+{\bf Applications} \\
+\hline
+motion of linkages \\
+wire EDM \\
+tangent envelopes for medial axis \\
+convex hull \\
+family of offsets of a space curve \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\item
+{\bf General swept surfaces}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|}
+%
+\hline
+%When does a pencil contain a ruled? \\
+Ruled, swept defn (pipe, artery, ...) \\
+	% e.g., defn of artery for Glacov/Giddens project
+	% 	defn of pipes for architectural design
+Ruled, swept intersection \\
+Cyclide extension \\
+Cyclide patch defn and intersection \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|}
+\hline
+{\bf Envelopes} \\
+intersection\\
+convex hull \\
+bitangents \\
+interference \\
+Bezier as envelope \\
+optimal sweep \\
+skeleton \\
+generalized cylinder \\
+ruled surface in pencil \\
+spherical product, ruled, ringed \\
+Voronoi diagram via upper envelope \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\item
+{\bf Flexible models}
+\begin{itemize}
+\item capable of deformation while maintaining geometric invariants
+	(such as quadric surface, swept surface, etc.)
+\item a.k.a. deformable model 
+\item first attack: flexible quadric nets (try flexible ellipses even
+	before that) % as in flexible ellipse making best match to
+			% artery as it sweeps along slices
+\item medical attack: anatomical models that are deformable to the 
+	patient's model
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|}
+%
+\hline
+%Get bounds on the cutter size (toroidal with min and max radius),\\
+%\ \ that is, offsets that avoid bad (pole) curvatures. \\
+% prefer tight bounds on cutter size since large radius of cutter
+%	makes small changes in angle lead to large changes in radius
+%	which is less robust (need to control angle carefully)
+%\hline
+When is a control net [a parameterization] a quadric?  \\
+Given a quadric control net and a movement of one of its control points, \\
+what movement of the other control points is necessary to maintain a
+quadric? \\
+% options: 1. algorithm for testing, with or without using 
+% 			implicitization (resultants) (with is easy)
+% 	   2. analog of invariants to implicit representation
+%	   3. geometric construction on control points
+% 
+\hline
+\end{tabular}
+\end{table}
+
+Efficient algorithms, and tractable surfaces, are very desirable.
+However, they can only be used in special circumstances.
+(Analogy, rational numbers are preferable to reals, but are sparse
+and special.)
+We want to understand the restrictions that must be put on a design
+to allow tractable surfaces and efficient algorithms.
+Thus, our goal is the development of restrictions for tractability.
+Two exemplary results are the conditions for planar intersection
+and the conditions for cyclide blending of cones.
+A design can try to relax onto a simple special case nearby,
+or we can view the conditions for the special case as predefined design
+parameters (as in the above problem of definition of control
+nets that begin quadric and remain quadric under dynamic online
+movement of control points).
+
+\clearpage
+
+\item
+{\bf Reconstruction}
+\begin{itemize}
+\item of anatomical models
+\item new patch: a model that reflects all three slice directions 
+	(sag,cor,trans), thus extending Coons patches
+\item landmark extraction from anatomical models, for a small set
+	of parameters to define the variations in an organ
+	(tieing in with above flexible anatomical models):
+	inflections, singularities, min curvatures, ...
+\item quadric version of Kalvin's polyhedral anatomical solid models,
+	for added conciseness and flexibility,
+	possibly still based on winged edge and Euler ops 
+\item computation of optimal correspondence between 2 slices
+	(e.g., minimal area), given two parallel slices defined 
+	as *curves* rather than point sets
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|}
+%
+\hline
+Reconstruction from 3 slice directions \\
+Optimal correspondence \\  % optical flow?
+Surface area, volume \\ % problem: most curves and surfaces are not rectifiable
+Concise deformable model \\
+\hline
+\end{tabular}
+\end{table}
+
+\item
+{\bf Integral properties} (with Tony and Greg)
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|}
+%
+\hline
+Diff geom: Gauss curvature, par/umb, bitangents \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
+
+\end{document}
+
+Given a (c,r,o) ring surface, give the equivalent (or approximate)
+Bezier surface.
+
+For clipping a ring surface:
+Given a Bezier circle, clip it at its intersection with a plane.
+Given a Bezier ring surface, clip it at its intersection with a plane.
+
+Given a surface defined as a sweeping envelope of a sphere,
+or a lofting of two curves, or a tangent developable, etc.,
+give the (c,r,o) ring surface.
+
+
+
+% ************************************************************
+
+Machining and INTERFERENCE DETECTION emphasis
+
+ringed \cap plane is important in analysis of sweep of object about polyhedral
+environment
+	it is a good problem because ringed \cap plane seems simple,
+	BUT (1) circle \cap plane isn't trivial and
+	    (2) combining the ringed \cap plane solutions for the entire
+		polyhedral environment needs to be addressed
+	It addresses the question: can you deal with a real problem using 
+		the swept surface paradigm?
+
+Graphics paper emphasizing ray casting.
+
+The evangelism of the circle
+
+Survey article on sweeping (Hopcroft's suggestion)
+
+Alpha shapes (possibly for triangulation with holes; for clustering)
+
+Cassini curves and tori (e.g., see Fischer and Lawrence)
+
+% ************************************************************
+
+design a solid modeler with ruled surfaces and cyclides (and planes and 
+	quadrics)
+	initially a toybox with intersection and design
+	propose an addition to BRL or Parasolid
+
+implementations
+
+dependence on symbolic quartic solution is a weak foundation upon which to
+	lay a theory, since the symbolic solutions are so convoluted
+
+% *******************************************************************
+
+
+d1^{2} + \alpha d2^{2} = k generalization of distance rep by two lines
+
+	- k = 0 and \alpha < 0 is original alpha-bisector of two lines
+
+	- can get sphere (lines through two antipodal points and 
+			  diagonals of circumscribing cube that touches
+			  sphere at those two points)
+		  ellipsoid, elliptic cylinder, cone, hyp. of 1 and 2 sheets
+
+	- definitely cannot get hyp cylinder, par cylinder, 
+	  elliptic paraboloid
+
+Point-line representation of quadrics
+
+	- want classification table by sign of \alpha (plus angle of plane
+	  and whatever else is necessary)
+
+Arbitrary to normal-form reduction
+
+Nearest neighbour: optimal representation of 
+		   3d generalization of parabola 
+
+	- in 2d with y=kx^{2}, the optimal m segments give an error
+	  of \epsilon = \frac{k}{16m^{2}} (x_{m} - x_{0})^{3}
+	     i.e., error reduces proportionate to 
+		   square of number of segments
+
+% ***********************************************
+
+Voronoi diagram of lines (need intersection first)
+
+	-application: safest-path motion planning
+	-Voronoi diagram of curves is too tough at first
+	 and not 3d anyway
+	-involves hyperbolic paraboloids, which I know well
+
+\title{Voronoi diagrams of lines in 3-space: closest and furthest VDs}
+
+NEED FULL UNDERSTANDING OF INTERSECTION OF HYPERBOLIC PARABOLOIDS
+(WHICH ARE THE BISECTORS OF THE LINES).
+POSTPONE UNTIL INTERSECTION IS CONSIDERED.
+
+We first establish that it is not a good idea 
+to try to compute the Voronoi diagram of lines in 
+3-space using Plucker coordinates and computing the Voronoi diagram
+of the images of the lines in the Plucker space.
+First of all, it is unclear whether distance is preserved by the Plucker
+transformation: if it is not, then the Voronoi diagram of the image points
+has no relationship to the desired Voronoi diagram of lines.
+Even if distance is preserved, 
+the Voronoi diagram in Plucker-space will yield a collection of lines
+in 3-space, and the cells of the Voronoi diagram (the intersection points
+of the lines etc.) still need to be computed.
+Moreover, the collection of lines would be totally unstructured,
+unlike the grouping into hyperbolic paraboloids if the Voronoi diagram
+of lines is attacked directly in 3-space.
+
+its combinatorial complexity 
+point location in its cells
+
+% **********************************************
+
+Problems for C.-K.
+------------------
+
+Convex hull (motion planning)
+
+	- how many segments in convex hull of curve?
+			O(n^{2})?
+			O(n)?
+
+	- inflection points seem to be integrally related to the
+	  convex hull of curves (although they do not represent
+	  the exact vertices of the convex hull)
+
+	- look at convex hulls of higher degree surfaces?
+		(involves ruled surfaces)
+
+
+Pencils
+	
+	- given two surfaces, what type of surfaces are
+	  contained in their pencil (ideal)?
+
+		e.g.: when do they contain a ruled surface?
+
+
+Classification of cubics
+
+	Get a good classification of cubic curves and surfaces.
+
+		-Blythe has a `classification' of cubic surfaces
+		 but it is not particularly good(?)
+
+% ********************************************************************
+
+key operations: curve-surface definition/description with points (input ops) *   ---
+		intersection (Boolean operations)			     *	   -CREATION
+		blending/fairing (smoothing operations)				   -
+		rotation/translation (motion operations)		         ---
+
+		sorting (ranking/order operation)			      ---
+		convex decomposition, decomposition of high degree curve into	-CREATION
+			a small number of low degree curves (decomposition 	-+ 
+			into simpler components for easier treatment)	      ---ANALYSIS
+			decomposition of algebraic surface into polyhedra
+			and/or quadric surfaces
+			convex hull algorithms are a start at this
+			- the decomposition of a surface into 
+			  convex components so that the theory of convex
+			  bodies can be applied to each of them
+
+		length/area/volume operations (analysis of solid)	      ---ANALYSIS
+		hidden-surface elimination, silhouette (display operations)   ---
+
+		parameterization/implicitization/inversion (indirectly)
+
+curves of positive genus: elliptic functions          parameterization
+
+------------------------------------------------------------------------
+
+M.S theses
+
+implementation of parameterization of ruled surfaces and space curves, other ops with 
+	ruled surfaces
+robot arm simulation (programming): 
+bisector of algebraic curves / more complicated Voronoi diagrams (programming)
+homotopy transformation: 
+	my old work on homotopy (vs. potential) method for blending and fairing surfaces
+	ruled surfaces (?)
+
+------------------------------------------------------------------------
+
+SIAM Journal on Computing
+Algorithmica  (Hopcroft on editorial board, had entire issue dedicated to robotics)
+Computer Vision, Graphics, and Image Processing (Sederberg et. al. on implicitization 
+						 is here)
+Computer Aided Design
+Computer Aided Geometric Design  (Goldman et. al. on implicitization is here)
+Journal of Algorithms
+Discrete and Computational Geometry (tough according to Mike because they are glutted)
+Discrete and Algebraic Geometry (the one s.t. Hopcroft is on editorial board)
+IEEE Transactions on SMC
+
+                          Journal Announcement
+                          ********************
+
+  Applicable Algebra in Engineering, Communication and Computer Science
+
+
+Arrangements have been finalized with Springer-Verlag to publish a new journal
+entitled "Applicable Algebra in Engineering, Communication and Computer Science"
+The first issue of this quarterly journal will appear in the beginning of 1990.
+
+AUTHORS ARE ENCOURAGED TO SUBMIT PAPERS. THIS IS A GOOD OPPORTUNITY FOR GOOD		**********
+PAPERS TO BE QUICKLY PUBLISHED!
+
+This journal aims to cover all aspects of applicable algebra in the fields of
+Communication, Engineering, Artificial Intelligence and Computer Science. This
+includes, but is not limited to, domains such as:
+(i)   Engineering: Vision, robotics, system design, VLSI, signal processing,		*****
+      fault tolerance and dependability of systems ....
+(ii)  Communication: Signal theory, coding, error control techniques,
+      cryptography, protocol specification ....
+(iii) Computer science and Artificial intelligence: arithmetics, algorithm
+      engineering, complexity, algebraic algorithms, computer algebra, logic		*****
+      and functional programming, programming languages, term rewriting systems
+      algebraic specification, theorem proving, graphics, modeling, knowledge		*****
+      engineering, expert systems, artificial intelligence methodology ....
+
+The scope of the journal is best illustrated by the two key-words in its title:
+"Applicable Algebra". This implies that it does not cover domains which are not
+linked to algebra such as applicable analysis or analytical methods to mention
+two obvious ones.
+Purely theoretical papers will not primarily be sought for even when they belong
+to "algebraic" domains such as combinatorics, finite geometry, computer algebra
+or cryptography for instance. But, papers dealing with problems in domains such
+as commutative or non-commutative algebra, group theory, field theory, real or      *****
+algebraic geometry for instance, which are of interest for applications in the
+previously mentioned fields are relevant for this journal.
+On the opposite, technology and know-how transfer papers from engineering which
+either stimulate or illustrate research in Applicable Algebra do fit the scope
+of this journal.
+
+The editorial board consists of:
+Th. Beth(Univ. of Karlsruhe), W. Buettner (Siemens, Munich),
+J. Calmet (Univ. of Karlsruhe - Managing Editor), P. Camion (INRIA, Paris),
+J. Cannon (Univ. of Sydney), J. Heintz (Inst. of Math., Buenos Aires),
+C.M. Hoffmann (Purdue Univ.), H. Imai( Yokohama National Univ.),		   *****
+D. Jungnickel (Justus-Liebig Univ. Giessen), E. Kaltofen (Rensselaer Poly-	   *****
+technic Inst., Troy), D. Kapur (SUNY at Albany), P. Lescanne (CRIN, Nancy),
+H. Lueneburg (Univ. of Kaiserslautern), H.F. Mattson (Syracuse Univ.),
+T. Mora (Univ. of Genoa), J. Mundy ( GE Co., Schenectady),
+H. Niederreiter (Austrian Academy of Sciences, Vienna), A. Poli (Univ. Sabatier,
+Toulouse), S.A. Vanstone ( Univ. of Waterloo).
+
+Submissions are to be sent to:
+
+Calmet Jacques
+e-mail : calmet@ira.uka.de  (csnet)      calmet@DKAUNI0I.BITNET (bitnet)
+Universitaet Karslruhe - Institut fuer Algorithmen und Kognitive Systeme
+Postfach 6980  -  D-7500 Karlsruhe 1  -  BRD  -   tel.: (49) 721 6084043
+/* ---------- */
+
+

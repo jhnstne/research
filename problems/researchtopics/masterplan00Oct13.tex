@@ -1,0 +1,597 @@
+\documentclass[11pt,titlepage]{article}
+\newif\ifFull
+\Fullfalse
+\input{header}
+\newcommand{\add}[1]{#1}		% {{\bf #1}}
+\newcommand{\plucker}{Pl\"{u}cker\ }
+
+\DoubleSpace
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\topmargin}{.5in}	% should be 0pt for 1in
+% \setlength{\headsep}{.5in}
+\setlength{\textheight}{8.5in}
+\setlength{\textwidth}{6.5in}
+\setlength{\columnsep}{5mm}	% width of gutter between columns
+% \markright{Master plan: \today \hfill}
+% \pagestyle{myheadings}
+% -----------------------------------------------------------------------------
+
+\title{A research master plan}
+\author{J.K. Johnstone\\UAB Geometric Modeling Lab}
+
+\begin{document}
+
+\maketitle
+
+\section{Motion}
+
+We have explored motion in several ways in our past work.
+This includes the construction of bisectors of plane curves for safest path motion,
+the construction of rational quaternion splines for motion in orientation space,
+the construction of swept surfaces for interference detection,
+and the study of ruled surfaces (motion of a line).
+Our new work will address the following issues:
+%
+\begin{itemize}
+\item   common tangents of plane curves
+\item   tangents of a curve through a point (pole/polar/class)
+\item   visibility graphs of plane curves
+\item   penumbra/umbra classification of 2-space
+\item   shortest path motion amongst plane curves
+\item   common tangents on a sphere
+\item   orientation planning amongst obstacles
+\item   common tangents of surfaces
+\item	lighting (umbra,penumbra) from smooth surface light in 3-space ('smooth shadows')
+\item	finding a geodesic on a common tangent surface
+\item	shortest path motion in curved 3-space environment
+\item	convex hulls of curves and surfaces
+\item	silhouette and visibility algorithms ('smooth silhouettes')
+\item	striction curve of ruled surface; envelope of moving plane
+\end{itemize}
+%
+Grant proposal themes:
+\begin{itemize}
+\item
+Motion planning infrastructure in a smooth world
+(visibility graphs, common tangent surfaces, visibility information)
+\item orientation planning
+\item corollary impact on lighting, sound, and shape
+\end{itemize}
+%
+Grant sources (for further exploration):
+\begin{itemize}
+\item	ONR (McMullen, motion planning algorithms)
+\item	Honda (orientation space motion planning amongst obstacles 
+	and shortest path motion amongst smooth surfaces for 
+	assembly-line robots, visibility analysis for car design, 
+	human motion research?)
+\item   Later
+\begin{itemize}
+\item   NSF (?, motion planning)
+\item   NSF (?, shape analysis)
+\item   ARO (Discrete Math and CS, shape analysis)
+\end{itemize}
+\item   After lighting research
+\begin{itemize}
+\item   NSF (?, lighting)
+\item   Alias/Wavefront (lighting)
+\end{itemize}
+\end{itemize}
+
+\begin{table}
+\begin{tabular}{|c|c|c|}  	\hline
+Topic & Conference & Due date \\ \hline
+common tangents of plane curves & 	Shape Modeling & Oct. 15 \\ \hline
+smooth visibility graphs & 	GI & Nov. 19 \\ \hline
+pole/polar 		 & ACM SE Conference & Dec. 10 \\ \hline
+smooth lighting &			Eurographics & Feb. 14\\ \hline
+common tangent planes of surfaces &	Visualization & - \\ \hline
+common tangents on S3 and shortest paths & ? & - \\ \hline
+other uses of tangential curves	&	spring submission & - \\ \hline
+convex hull &				Computational Geometry & - \\ \hline
+shortest path motion &			R\&A 2002 & - \\ \hline
+%
+smooth shortest paths (2D won't cut it: need 3D) & ONR robotics & spring \\ \hline
+? & Honda 		& Oct. 27 \\ \hline
+modeling interest, MAYA &		Auburn architecture & fall \\ \hline
+talk	& Illinois at Chicago & spring \\ \hline
+\end{tabular}
+\caption{Papers}
+\end{table}
+
+
+
+\clearpage
+
+
+% mathematical elegance
+% philosophical elegance
+% religious elegance
+
+Lines for visibility.
+\begin{itemize}
+\item	visibility--Canada--rococo
+\item	visibility for viewing (can I see it?), lighting (can the light see it?),
+		sound (can the violin see it?)
+\item	just as with shape (Plato Meno), where the shape is the boundary of the
+		object, the boundaries of visibility are of paramount 
+		importance
+\item	for sound, how many different ways can the sound bounce to me,
+		and how many bounces does each path entail, and how far
+		is each bounce?
+		the cone of silence behind an obstacle;
+		the cone of darkness behind an obstacle (the dark side of the moon);
+		the cone of invisibility behind an obstacle.
+\item	pole/polar, silhouette, common tangent, visibility graph in 2D;
+		compute the visibility graph for a moving point in the plane
+		(is there an analog in space?);
+		compute the moving silhouette as the eye travels about a room
+		
+\item	lighting needs the global lit (or dark) locus, while motion needs
+	a specific path along the boundary of this locus;  in this sense,
+	motion is a second-order use of visibility information,
+	while lighting is a first-order use.  However, motion is a less 
+	realistic application of visibility since following the true shortest
+	path is a wee bit forced, while light and sound truly do follow
+	the shortest (visible) path naturally.
+\item	
+	all of these visibility problems have been studied, but in the polygonal
+	discrete realm, not the continuous smooth one.
+	
+\item	pole/polar of a Bezier curve
+\end{itemize}
+		
+
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
+	
+\section{Motion}
+
+\begin{enumerate}
+\item Position
+\begin{enumerate}
+\item Rigid robot
+\begin{enumerate}
+\item Shortest path
+\begin{enumerate}
+\item In the plane % ({\em common tangent space})
+\item In 3-space
+\item On a 2-surface
+\end{enumerate}
+\item Safest path
+\begin{enumerate}
+\item In the plane % ({\em bisector})
+\item In 3-space
+\item On a 2-surface
+\end{enumerate}
+\end{enumerate}
+\item Linked robot
+\begin{enumerate}
+\item Amongst obstacles
+\begin{enumerate}
+\item configuration space obstacle
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+\item Orientation
+\begin{enumerate}
+\item In 3-space 
+\begin{enumerate}
+\item Free space % ({\em quaternion spline})
+\item Amongst obstacles
+\end{enumerate}
+\end{enumerate}
+
+\item Workspace determination
+\begin{enumerate}
+\item Swept surfaces % ({\em shape-preserving swept surfaces}, {\em ruled surfaces})
+\item Intersection algorithms % ({\em ringed/cyclide intersection})
+\end{enumerate}
+
+\item Morphing (shape under motion: dynamic shape)
+\begin{enumerate}
+\item Traditional morphing
+\item Contour reconstruction as morphing % ({\em smooth contour reconstruction})
+\item Scattered data reconstruction as contour reconstruction
+	(hence as morphing)
+\end{enumerate}
+\end{enumerate}
+
+
+\clearpage
+
+\section{Shortest path motion of a rigid robot in the plane, position only}
+
+\begin{enumerate}
+\item Of a point among polygonal obstacles
+\begin{enumerate}
+\item visibility graph (Lozano-Perez)
+\end{enumerate}
+\item Of a point among curved obstacles
+\begin{enumerate}
+\item tangent space
+\begin{enumerate}
+\item common tangent of two curves
+\item polar of a point and a curve
+\end{enumerate}
+\end{enumerate}
+\item Of a polygon among polygonal obstacles
+\begin{enumerate}
+\item Minkowski sum (Lozano-Perez)
+\end{enumerate}
+\item Of a curve among curved obstacles
+\begin{enumerate}
+\item envelope
+\end{enumerate}
+\end{enumerate}
+
+{\bf Value added: motion in a curved world.}
+Motion algorithms are improved through the use of curved, rather than polygonal, obstacles.
+Motion in a curved world is more efficient, since visibility graphs are smaller.
+It is also more accurate.
+Using the same theory, we also have improved lighting in a curved world.
+
+\vspace{1in}
+Fun applets
+\begin{itemize}
+\item	Pole/polar of a circle
+\item   Inversion in a circle
+\end{itemize}
+
+Motion in 3-space amongst polyhedra: Schwartz/Sharir and Reif/Storer
+(Shortest paths in Euclidean spaces with polyhedral obstacles, 1985 Brandeis
+Tech Report).
+
+\clearpage
+
+\section{Orientation control of a rigid robot in 3-space}
+
+{\bf Value added: improved rational quaternion splines.}
+Efficient rational quaternion splines can improve all aspects of animation that use
+quaternions, such as motion editing, motion optimization, physics-based animation,
+and high-level animation.
+
+Fun applets
+\begin{itemize}
+\item Quaternion associated with a cube's orientation.
+\end{itemize}
+	
+\clearpage
+
+\section{Workspace determination}
+
+\begin{enumerate}
+\item Workspace determination
+\begin{enumerate}
+\item Swept surfaces
+\begin{enumerate}
+\item Pythagorean hodographs for rational perfect sweeps
+\end{enumerate}
+\item Surface intersection
+\begin{enumerate}
+\item Ruled surface intersection (Heo, CAD, 1999; Heo thesis, 2000)
+\item Ringed surface intersection (Heo 2000)
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+Fun applets
+\begin{itemize}
+\item Intersection of two lines
+\end{itemize}
+
+Add ruled surface to modeling vocabulary (representation, intersection,
+	ray casting)
+	
+Sources of ruled surfaces: common tangents between 2 surfaces,
+	cylinders, ruled quadrics, envelope of link, part of convex hull
+	of collection of surfaces
+
+\clearpage
+
+\section{Morphing: Dynamic shape}
+
+Dynamic shape is shape defining a motion rather than a static boundary.
+It can also refer to a shape that changes over time, either morphing between two shapes
+or vacillating in some other way.
+
+\begin{enumerate}
+\item Dynamic shape
+\begin{enumerate}
+\item The locus of the reference point of a moving object
+\item Morphing
+\begin{enumerate}
+\item Traditional morphing
+\begin{enumerate}
+\item Sederberg
+\item Parent
+\end{enumerate}
+\item {\bf Contour reconstruction as morphing}
+\begin{enumerate}
+\item Contour reconstruction as the spacetime envelope or locus of a morph
+\item What does morphing have to say to contour reconstruction?
+	Do morphing algorithms generate good contour reconstructions?
+\item What does contour reconstruction have to say about morphing?
+	Can contour reconstruction techniques improve morphing?
+\end{enumerate}
+\item Scattered data reconstruction as contour reconstruction
+\begin{enumerate}
+\item {\bf Extraction of contours from scattered data}
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+
+{\bf Value added: Insight into morphing and reconstruction, 
+new algorithms for scattered data and contour reconstruction,
+and a unification of morphing with reconstruction.}
+
+Fun applets
+\begin{itemize}
+\item Morphing between two input polygons using minimal area triangulation.
+\end{itemize}
+
+\clearpage
+
+\section{Contour reconstruction}
+
+\begin{enumerate}
+\item Clean up data.
+\begin{itemize}
+\item remove duplicates and self-intersections
+\item impose consistent ccw orientation
+\item output of 'recon -j file.rawctr'
+\item we want to resample the curves implied by the contour data to clean it 
+	up; this may be appropriate at this stage [at present, we postpone this
+	resampling, since we don't use it at the moment until after the 
+	topology is computed; but we could use the original data points
+	in the topology computation even if the resampling already existed
+	and was already considered dominant]
+\end{itemize}
+\item Decompose object into metatubes, canyons and canyon caps.
+\begin{enumerate}
+\item Begin to locate metatubes, canyons and canyon caps, by locating branches
+\begin{itemize}
+\item reconstruct topology
+\item which contours connect to which contours, especially at branches?
+\item methodology: MST of contour graph
+\item output of 'recon file.rawctr'; branches stored in file.topoctr
+\end{itemize}
+\item Refine location of canyons and caps
+\begin{itemize}
+\item mediate between tubes at branches [build canyon bridges]
+\item Purpose: to add a tube at branches merging between parent stem and
+	offspring branches (picture of merging tube between ordinary tubes)
+\item Second purpose: to define the canyons at branches
+\item build bridgeheads to stitch branching contours together one section longer
+	for a smooth transition
+\item the bridgeheads define the canyon at a branch (the bridges and 
+	contour segments between the bridgeheads are the boundary of the canyon)
+\item methodology: curve match with parent contour
+\item output of 'recon file.topoctr'; bridgeheads stored in file.bridgectr
+\item bridges need to be temporarily defined
+\begin{itemize}
+\item the bridges define the canyon in the contour plane
+	(but notice that the bridge will not lie on the final surface:
+		it will be dropped down below the contour plane first)
+\item the bridges also indirectly define the boundaries
+      of the canyon caps, as follows: after resampling and triangulation of the
+	supercontour with the parent contour, the points
+	of the parent contour connected to a bridge by the triangulation
+	define one of the boundaries of the canyon cap, the bridge defines
+	another boundary, and the obvious connections between them define
+	the other two boundaries.
+\item after the bridges have been used for the canyon quadrangulation
+	and the definition of the canyon caps, they are dropped to 
+	a plane oblique to the contour plane, using tangent ribbons
+	at the bridge endpoints to define a Hermite curve.
+\end{itemize}
+\end{itemize}
+\item Decompose surface into metatubes, canyons, and canyon caps
+\begin{itemize}
+\item Data structure for canyons, caps, metatubes?
+\item Canyon = 2 contour curve segments; data points on these curves
+\end{itemize}
+\end{enumerate}
+\item Define object polygonally
+\begin{enumerate}
+\item define metatubes, polygonally 
+\begin{itemize}
+\item triangulate tubes (ignoring canyons)
+\end{itemize}
+\item define caps, polygonally
+\begin{itemize}
+\item identify subset of triangulation that defines cap
+\end{itemize}
+\item define canyons, polygonally 
+\begin{itemize}
+\item quadrangulate canyons
+\item could sample canyon at some denser/uniform rate for quadrangulation vertices or
+	could use original data points; resampling is favoured for 
+	allowing more optimal quadrangulations (and allowing a pure quadrangulation
+	rather than a quadrangulation/triangulation), but discouraged for
+	possibly generating more patches
+\item use the existing resampling as the foundation of the vertices,
+	but {\bf allow vertices to be skipped} as you build the quadrangulation,
+	so as {\bf to favour optimal rectangles} 'directly across' the canyon (not slanted);
+	that is, quadrangulate a subset of the resampled data points
+\item only use the active (nonskipped) data points to calculate tangent ribbons
+	below, so that ribbons on the side of a canyon quadrangle are only
+	one segment long (during Coons patch construction)
+\item Note: could triangulate and later use triangular Coons patches,
+	but this is a topic for future study (M.S.)
+\item could even represent canyon as 2n curve segments and quadrangulate
+	by generating quadrangles at arbitrary points of the curves
+	(effectively resampling guided by the quadrangulation);
+	the points of this quadrangulation would then become the seeds
+	of the flowlines for the metatubes;
+	this is the most elegant solution since it does not depend on any
+	sampling; the canyon is simply a collection of curves
+\end{itemize}
+\end{enumerate}
+\item Define object's curve network.
+\begin{enumerate}
+\item define metatube's curve network
+\item define canyon's curve network 
+\begin{itemize}
+\item build curves along interior edges of quadrangulation
+\item basic idea is Hermite curves, but difficult since tangents
+	at two ends of edge are not coplanar and may be quite wildly different,
+	leading to an awkward Hermite curve; a compromise is desirable,
+	but one that allows a good Coons patch to be constructed later;
+	this shouldn't be too hard since the shape of this boundary curve
+	of the patch is a free parameter in the Coons patch
+	and there is no need to follow the tangents at the endpoints
+\end{itemize}
+\item define cap's curve network
+\end{enumerate}
+\item Define C1 boundary information between components
+\begin{enumerate}
+\item preprocessing: seed flowlines from each data point of boundary contours
+	of metatubes (only using nonskipped data points on canyon)
+\begin{itemize}
+\item   note that the data point sampling rate has an impact here
+\item	this inherently includes canyons and covers the necessary points
+	for later ribbon definition 
+\item   ensure that all data points of shared boundary are the same,
+	with respect to both metatubes on either side
+\end{itemize}
+\item define metatube's C1 boundary information
+\begin{itemize}
+\item	build tangent ribbons at boundaries of metatube, using flowlines
+\item	Want boundary ribbons of neighbouring metatubes to match:
+	how shall they be specified?
+	1) Automatically from patch, but this requires an ordering of the
+		metatubes so that one ribbon can be inherited to the next
+		for $C^1$ continuity; we do not want a different surface
+		depending on whether we traverse the metatubes up or down.
+	2) From triangulation: at each data point, flow up to next contour
+		and flow down to previous contour; using these three points,
+		define a parabola and read off its tangent
+		(at object boundaries including canyons, just use two points 
+		to define the tangent directly, or perhaps to define a parabola
+		as in Bessel end tangents for a less acute tangent).
+		Then interpolate these tangents across the entire curve
+		(using the same approach as interpolating points).
+		Note to only use the nonskipped data points from the canyon.
+\end{itemize}
+\item define canyon's C1 boundary information
+\begin{itemize}
+\item for missing ribbons of canyon rectangles,
+	artificially and arbitrarily construct as orthogonal to Hermite boundary
+\end{itemize}
+\item define cap's C1 boundary information
+\end{enumerate}
+\item Define object's surface.
+\begin{enumerate}
+\item define metatube's surface
+\begin{itemize}
+\item tensor product Bezier patches guided by triangulation
+\end{itemize}
+\item define canyon's surface [Coons patches]
+\begin{itemize}
+\item draw Coons patch by evaluating u,v points at a dense sampling on the patch
+	and drawing resulting triangulation (not too different from 
+	display of Bezier surface)
+\item could use triangular Coons patch (BBG or Nielson)
+\end{itemize}
+\item define cap's surface [Coons patches]
+\end{enumerate}
+\end{enumerate}
+
+Get DeRose/Sloan triangular surface patch smooth solution from triangulation
+software up and running for a comparison.
+
+16 vs. 32-bit images.
+
+Fun applets
+\begin{itemize}
+\item Supercontour construction
+\item Quadrangulation
+\item Identification of canyon cap.
+\item Flowline construction.
+\item Coons patch construction
+\end{itemize}
+
+\begin{enumerate}
+\item Reconstruction from morphing algorithm
+\item Reconstruction from transaxial and coronal (or sagittal) contours
+\end{enumerate}
+
+{\bf Value added: a smooth reconstruction with a natural definition of
+	canyons, with potential insight into morphing (of which a polygonal
+	reconstruction is less capable, since the canyon is either artificially
+	dropped down halfway or fully dropped down, so the natural
+	morphing of two contours into one, which is defined by the shape
+	of the canyon, cannot be elegantly done in a polygonal reconstruction).
+	
+	Insight into the 'correct' shape between two curves (or n brother curves
+	and a parent curve).
+	
+	Insight into shape.
+}
+
+\vspace{.5in}
+
+Applications of reconstruction
+\begin{itemize}
+\item	Shape acquisition for animation, virtual reality worlds, 
+	engineering, medicine.
+\item	Anatomical modeling; tissue modeling (adrenal,ganglion)
+\item   Advantages over Marching Cubes and scattered data reconstruction
+	(why not use marching cubes for scattered data, if it is so great?)
+\end{itemize}
+
+\clearpage
+
+\vspace{-.5in}
+
+\section{The large picture}
+
+We are interested in motion, its description, its planning.
+%
+\begin{verbatim}
+visibility for shortest path motion	 (also applicable to lighting)
+  visibility graph amongst curved obstacles
+	2-space: common tangents, tangents from a point
+		tangent space, polars, dual curve (normal space, silhouette)
+	 		lines
+				Plucker space
+	3-space: bipolar curves of common tangency
+		 common tangent ruled surfaces
+		 geodesics on surfaces (contact motion + shortest path between 2 solids)
+				
+motion in orientation space
+	quaternion splines
+		rational quaternion splines (GI)
+	motion amongst orientation obstacles
+		tangent space on a nonplanar Riemann surface
+			common tangents on S3
+	pure orientation and orientation + translation
+	motion editing
+	animation
+				
+kinematics (rather than point robot)
+	line geometry
+workspace determination
+	envelopes, swept surfaces
+		sweeping an object while preserving its shape -> swept surface (Eurographics)
+	intersection algorithms
+		ringed/cyclide intersection (CAGD)
+safest path motion
+	bisectors (CAGD)
+\end{verbatim}
+
+\end{document}

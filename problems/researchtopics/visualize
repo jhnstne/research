@@ -1,0 +1,118 @@
+Data types
+----------
+
+I) 3D Points
+
+	A) Scattered
+		Defn: Point data acquired from a laser (e.g., Cyberware) scanner
+		      or probing device, from the surface of an existing object
+		      or mathematical model, and in an essentially random fashion.
+		
+		Data sets: /ca/jj/scatter/data/club71.16864.pts    [from Univ of Washington: june.cs.washington.edu:/pub/graphics]
+			   	           .../distcap.12745.pts
+					   .../mannequin.12772.pts
+					   .../mechpart.4102.pts
+			   	           .../oilpmp.30937.pts
+			   	           .../spock.9508.pts
+		Software:  /ca/jj/scatter/pts.c [Visualize points]
+
+================================================================================
+
+	B) Contour
+		Defn: Point data acquired in slices.  Typically from CT/MRI.
+
+		(i)   Single axis (usually transaxial)
+
+--------------------------------------------------------------------------------
+		   (a) Non-branching
+
+			Data sets: /ca/jj/cardio/LV/dataAneurysm	[Left ventricle from Ross Singleton and NMR Lab]
+						.../dataLVH
+						.../dataMarathon
+						.../dataNormal
+						.../dataOriginal
+				   /ca/jj/cardio/CYL/data100	
+						 .../data20
+				   /ca/jj/contour/skewcyl/cyl011-100-10	[Razvan's skew cylinder slices]
+				   /ca/jj/cardio/SHEARCYL/data		[my crack at a skew cylinder]
+				   /ca/jj/cardio/FEMUR1		[Femur from Alan Eberhardt and Peter Czuwala in Mechanical Engineering, from Cuckler in Orthopedics]
+					     .../FEMUR2
+					     .../FEMUR3		[cartilage]
+					     .../TIBIA1
+					     .../TIBIA2
+					     .../TIBIA3
+					     .../FIBULA
+					     .../FEMUR-DISTAL	[old version of femur data]
+				   /ca/jj/scatter/femur.18224.pts
+
+		       Software: cardio, tp, thick, viewthick, prepbeat, beat
+		       Additions: 
+			(1) Formalize tolerance control.
+			(2) Improve `best partner' computation using global criteria.
+*******			(3) Clean up code with include structure and mallocs and OpenGL
+
+			NEED TO ESTABLISH FORMALLY THAT OUR METHOD IS SUPERIOR
+			THROUGH SOME TANGIBLE TESTS AND COMPARISONS
+				   
+--------------------------------------------------------------------------------
+		   (b) Branching
+			Data sets: /ca/jj/branch/data/femur 	[Ken's femur from /rc/GRAIL/femur/data/boundaries]]
+		  		    		  .../obturator [Ken's obturator artery from /rc/GRAIL/ContoursRelease/data/obturatorr.sections]
+				   /ca/jj/branch/data/barequet/* [Gill Barequet's TelAviv slice database]
+
+			Software:
+			Goals: 
+******			(1) Create triangulation.
+			(2) Flow across a triangulation to create 
+		 	    triangular Bezier surface.
+
+--------------------------------------------------------------------------------
+		(ii)  Multi-axis: Coronal/sagittal/transaxial
+
+			Data sets: /ca/jj/JHU/Euclid/brain	[putamen from Jerry Prince's brain atlas project]
+
+	C) Surface and interior data points
+
+		Bezier volume
+
+================================================================================
+
+
+teapot: /rc/GRAIL/SurfaceFitting/meshes/teapot.m
+
+	/usr/share/data/models/household/teapot.iv
+
+
+(II) Point+Normal Data
+
+================================================================================
+(IIIa) Quaternions
+			Goals: Incorporate physical optimizations (or characterize
+				the physical behaviour of my animations as opposed
+				to other animation techniques)
+		
+===============================================================================
+((IIIb) Object Data; Point+Orientation Data; Point+Quaternion Data; Keyframes
+
+(IV) Activation data
+	Directory: 
+	Data sets: Palate
+
+	Directory:
+	Data sets: CRML
+
+(V) Stereo photographs
+	
+	(a)
+	(b) capturing silhouette lines only from various viewpoints
+
+(VI) Topographic maps
+
+(VI) Eigenheads
+
+
+
+Viz program
+	- accept any type of data file
+	- input, display, rotate, tool box (e.g., for quaternions),
+		application domain (e.g., animation for quaternions)

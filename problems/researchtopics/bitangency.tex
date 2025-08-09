@@ -1,0 +1,780 @@
+\documentclass[12pt]{article}
+\usepackage{latex8}
+\usepackage{times}
+\usepackage{epsfig}
+\input{header}
+
+\newif\ifTalk
+\Talktrue
+\newif\ifJournal
+\Journaltrue
+\newif\ifFuture		% issues that are useful for future papers
+\Futurefalse
+
+\newcommand{\plucker}{Pl\"{u}cker\ }
+\newcommand{\tang}{tangential curve\ }
+\newcommand{\tangs}{tangential curves\ }
+\newcommand{\Tang}{Tangential curve\ }
+\newcommand{\atang}{tangential a-curve\ }
+\newcommand{\btang}{tangential b-curve\ }
+\newcommand{\ctang}{tangential c-curve\ }
+\newcommand{\atangs}{tangential a-curves\ }
+\newcommand{\btangs}{tangential b-curves\ }
+\newcommand{\ctangs}{tangential c-curves\ }
+\newcommand{\acurve}{a-curve\ }
+\newcommand{\bcurve}{b-curve\ }
+\newcommand{\ccurve}{c-curve\ }
+\SingleSpace
+\setlength{\headsep}{.5in}
+	% \setlength{\oddsidemargin}{0pt}
+	% \setlength{\topmargin}{-.2in}	% should be 0pt for 1in
+\setlength{\textheight}{8in}
+	% \setlength{\textwidth}{6.5in}
+	% \setlength{\columnsep}{5mm}	% width of gutter between columns
+\markright{Bitangency: \today \hfill}
+\pagestyle{myheadings}
+
+% -----------------------------------------------------------------------------
+
+\title{Bitangency}
+\author{John K. Johnstone\\
+	Geometric Modeling Lab\\
+	Computer and Information Sciences\\
+	The University of Alabama at Birmingham\\
+	University Station, Birmingham, AL 35294}
+
+\begin{document}
+\maketitle
+
+{\bf Dagstuhl}
+\begin{itemize}
+\item	bitangency 
+\begin{itemize}
+\item	importance of bitangency [intro to SMI paper and opening slides of Dagstuhl]
+\item   computing bitangents of parametric curves (rigorous comparison of tangential curve and implicit solution for parametric curves)
+\end{itemize}
+\item   {\bf applying bitangency: smooth convex hull by smooth giftwrapping}
+\item   applying bitangency: smooth visibility graph
+\begin{itemize}
+\item 	Welzl improvement
+\item   culling to invisible bitangents
+\item   analysis of reduced complexity and increased precision 
+	compared to polygonal visibility graph
+\end{itemize}
+\item 	applying bitangency: smooth kernel
+\end{itemize}
+
+{\bf WSCG}
+\begin{itemize}
+\item Computing bitangents of Chaikin curves by lazy subdivision
+\end{itemize}
+
+{\bf CAGD}
+\begin{itemize}
+\item The tangential surface
+\end{itemize}
+
+{\bf Graphics conference with fall submission, like Graphics Interface}
+\begin{itemize}
+\item Smooth umbra
+\end{itemize}
+
+
+\clearpage
+
+% -----------------------------------------------------------------------------
+
+\tableofcontents
+
+\clearpage
+
+\listoffigures
+
+\clearpage
+
+% -----------------------------------------------------------------------------
+
+\section{A detailed discussion of bitangency}
+\label{sec:bitangency}
+
+The bitangent defines a visual event.
+
+\ifTalk
+\begin{rmk}
+Where do you throw the ball so that it can be caught by another curve?
+A bitangent indicates where the ball should be thrown from one curve 
+so that it can be caught by a second curve.
+Point/curve: Where do you shoot to hit the target (as you run around a track)?
+Where does the spotlight illuminate a given spot?
+\end{rmk}
+\fi
+
+The bitangents of two curves are at the heart of many problems
+involving visibility.
+% are fundamental in many geometric applications, particularly those that involve visibility.
+Consider a collection of closed curves in the plane, interpreted as 
+obstacles for a robot.
+The bitangents of these curves define the limits of visibility,
+and consequently the shortest paths that can be travelled by the robot
+(Figure~\ref{fig:applications}).
+If we instead interpret the collection of closed curves as 
+an area light source and occluders,
+the bitangents define the boundaries of the shadows (umbra and 
+penumbra) that are cast by the light (Figure~\ref{fig:appl2}).
+Common tangents are also needed for basic geometric computations with curves,
+such as the convex hull.
+\cite{parida95} mentions many more applications, including font design.
+% bin-packing, and compaction.
+
+Visibility complex's use of bitangents (Durand, Petitjean).
+
+\begin{figure}
+\caption{Bitangents for shortest paths}
+\label{fig:applications}
+% svgraph vg4b.rawctr, path only
+% jjdush.gif
+\end{figure}
+
+\begin{figure}
+\caption{Bitangents for lighting from an area light source}
+\label{fig:appl2}
+% svgraph vg4b.rawctr, visible bitangents on, source/destination off
+% jjdulight.gif
+\end{figure}
+
+The bitangency problem is truly an intersection problem,
+% The bitangency problem can be naturally posed as an intersection problem.
+% The problem of bitangency is naturally posed as a problem of intersection.
+since a bitangent is simultaneously a tangent of two curves.
+% After all, a bitangent is a line that is simultaneously a tangent of two curves.
+The standard solution reduces bitangency to the intersection of implicit curves.
+We explore an alternate reduction, 
+to the intersection of parametric Bezier curves.
+% In this paper, we reduce the problem instead to the intersection
+% of two parametric Bezier curves.
+The robustness, efficiency, and simplicity of Bezier intersection
+make this an attractive solution.
+
+Let $C(s) = (c_x(s),c_y(s))$ and $D(t) = (d_x(t),d_y(t))$ be 
+plane curves of degree $n$.
+The standard solution \cite{bajajkim87,parida95} argues as follows.
+% reduces to the intersection of two implicit curves.\footnote{An implicit 
+%	curve in the plane is a curve represented as the zero set
+%	of a bivariate polynomial, $f(x,y)=0$.}
+Since a line between $C(s)$ and $D(t)$ is a bitangent if and only if 
+it is orthogonal to the normal at both $C(s)$ and $D(t)$,
+a bitangent is a parameter pair $(s,t)$ satisfying the following
+system of equations:
+%
+\[
+\begin{tabular}{c}
+$(c_x(s) - d_x(t), c_y(s) - d_y(t)) \cdot (-c_y'(s), c_x'(s)) = 0$\\
+$(c_x(s) - d_x(t), c_y(s) - d_y(t)) \cdot (-d_y'(t), d_x'(t)) = 0$
+\end{tabular}
+\]
+%
+This is the intersection of two implicit curves of degree $2n-1$
+in parameter space:
+\[
+\begin{tabular}{c}
+$f(s,t)=0$\\
+$g(s,t)=0$
+\end{tabular}
+\]
+
+\Comment{
+A similar solution works for two
+implicit curves, generating a more expensive system of 4 equations,
+or for an implicit curve and a parametric curve, generating 3 equations
+(see \cite{bajajkim87}).
+}
+
+% In this paper, we reduce the problem instead to the simpler intersection
+% of two parametric Bezier curves.
+In our solution, we interpret the tangent space of a curve as a family of lines
+(Figure~\ref{fig:linefamily}),
+and a bitangent as an intersection of the line families of two curves.
+\Comment{
+	This interpretation of bitangency as intersection
+	will be a central theme of the paper.
+}
+To simplify the intersection of line families,
+we map to a dual space. % where intersection is more natural.
+By encoding a tangent line as a point in a dual space,
+a family of tangent lines becomes a parametric curve in the dual space
+(Figure~\ref{fig:1dual}).
+The computation of bitangents then reduces to the intersection of 
+curves in dual space (Figure~\ref{fig:biTang}).
+The representation of tangent space as a rational Bezier curve in dual space
+(Section~\ref{sec:bez}) is a development of independent interest.
+It can be a useful tool for the analysis of tangent spaces.
+
+% -----------------------------------------------------------------------------
+
+\subsection{Bitangency as intersection: the final algorithm}
+
+In many applications (e.g., motion planning and lighting),
+visible bitangents are the only bitangents of interest,
+and an extra filtering step should be added to the algorithm (Figure~\ref{fig:appl2}).
+A bitangent is visible if its two points of tangency
+are visible (i.e., the line segment connecting them
+has no interior intersections with any obstacles).
+Since a botangent is by definition close to the 
+obstacle as it approaches it, and the intersection algorithm is approximate,
+care must be taken in evaluating visibility.
+% since it is easy to mistakenly find an apparent 
+% intersection of the bitangent with an obstacle near the point of tangency,
+
+Rather than using duality, the following solution is preferable
+	to map the intersections back to bitangents. 
+	We record each intersection as a parameter pair $(s,t)$,
+	the parameter values of the intersection point with respect to each curve.
+	The two endpoints $C(s)$ and $D(t)$ of the bitangent are then immediately 
+	available.
+	These endpoints are necessary for testing if a bitangent is visible.
+
+The bitangents of a single curve can also be computed using this algorithm
+(Figure~\ref{fig:eg4}).
+The only difference is that $C$ and $D$ are the same curve,
+and the intersection of step (3) is self-intersection \cite{lasser89}.
+Figure~\ref{fig:eg4} shows the computation of the bitangents of a single curve.
+The curves and their tangential curve systems are the same as in Figure~\ref{fig:eg2}:
+we have just zoomed in on the tangential curves to better show detail
+near the intersections.
+
+\begin{figure*}
+\caption{Bitangents of a single curve}
+% dual ob1.rawctr, self-intersections and all bitangents between single curve
+% jjdusingle.gif
+\label{fig:eg4}
+\end{figure*}
+
+% -----------------------------------------------------------------------------
+
+\subsection{Curve intersection}
+\label{sec:intersect}
+
+Possible interpretation: 
+everybody knows about intersection: an insult to include it.
+
+Once our problem has been translated to dual space by computing tangential curves,
+it reduces to curve intersection, 
+a problem that has received much attention and is well understood \cite{sederberg86}.
+	% This is a major advantage of the tangential curve solution to bitangency.
+The standard solution to intersection is a divide-and-conquer approach using
+curve subdivision and the convex hull property of Bezier curves:
+if the bounding boxes of the two curves intersect, subdivide each curve
+and recursively intersect the four subsegments,
+halting when the bounding box is sufficiently small 
+(the curve is sufficiently straight) 
+to compute the intersection point directly.
+Sederberg reports that this is the most stable of the most popular
+intersection algorithms.
+\Comment{
+% the less details about intersection, the better: well understood
+A bounding box can be a convex hull or, for efficiency, 
+an axis-aligned box defined by the extremal coordinates of the control points.
+It turns out that the axis-aligned box, although larger, yields a more
+efficient intersection algorithm,
+since the convex hull is more difficult to compute.
+}
+
+Self-intersections of a Bezier curve (for the bitangents of a single curve)
+can be computed using the method of Lasser \cite{lasser89},
+which also uses subdivision, with some added subtlety
+(for example, two neighbouring
+segments of a curve will necessarily have an intersection at their
+common boundary that must be ignored).
+
+\Comment{
+Elaboration on self-intersections: cannot have self-intersection
+within a Bezier curve segment unless its control polygon has a self-intersection
+(explain why using variation-diminishing property?)
+so self-intersections are computed entirely the same as intersection
+of two curves, where both curves are the same.
+For example, the self-intersections of the Bezier spline with segments
+$S_0,\ldots,S_k$ are the union of the intersections of $S_i$ and $S_j$ for $i \neq j$,
+just as the intersections of the Bezier spline $C$ with segments
+$C_0,\ldots,C_m$ with the Bezier spline $D$ with segments 
+$D_0,\ldots,D_n$ are the union of the intersections of $C_i$ and $D_j$ for $i \neq j$.
+}
+
+\Comment{
+We shall compute intersections of dual curves in 2-space, 
+rather than projective 2-space.
+Fortunately, the intersections in 2-space are equivalent to the
+intersections in projective 2-space.
+(This may be a well-known fact of projective space.)
+Consider an intersection in 2-space: $(\frac{a_1}{c_1}, \frac{b_1}{c_1})
+= (\frac{a_2}{c_2}, \frac{b_2}{c_2})$.
+Then, in projective space, $(a_1,b_1,c_1) = \frac{c_1}{c_2} (a_2,b_2,c_2)$,
+so the associated lines in projective space are also equivalent and 
+form an intersection.
+Conversely, if two 'points' (lines) in projective space are equivalent
+(an intersection) then the associated points in projective space
+are also equivalent: if $(a_1,b_1,c_1) = k(a_2,b_2,c_2)$ ($k \neq 0$),
+then $(\frac{a_1}{c_1}, \frac{b_1}{c_1}) = (\frac{ka_2}{kc_2}, \frac{kb_2}{kc_2})
+ = (\frac{a_2}{c_2}, \frac{b_2}{c_2})$.
+}
+
+% ---------------------------------------------------------------------------
+
+\Comment{
+IT WILL BE DIFFICULT TO IMPLEMENT: MUST TRANSLATE EACH PIECE OF THE SPLINE
+INDIVIDUALLY, BUILD POWER-BASE POLYNOMIALS, COMPUTE RESULTANTS, ETC.
+THE ADVANTAGES OF THE PARAMETRIC SOLUTION ARE CLEAR WITHOUT FURTHER ANALYSIS.
+Comparison of execution times for our method (parametric curves in dual space)
+and the classical method (implicit curves in parametric space)
+in Table~\ref{tab:speedBajaj}.
+
+\begin{table}
+\begin{tabular}{|c|c|c|}  	\hline
+Data set & Time, old solution (seconds) & Time, our new solution\\ \hline
+1 & ? & ? \\ \hline
+2 & ? & ? \\ \hline
+3 & ? & ? \\ \hline
+\end{tabular}
+\caption{Improved efficiency of our solution}
+\label{tab:speedBajaj}
+\end{table}
+
+OVERKILL (ALTHOUGH SPEED DIFFERENCE IS NOTICEABLE); PREFER PITHINESS.
+The increase in efficiency gained by clipping at diagonal tangents
+is illustrated in Table~\ref{tab:speed}.
+{Also show figures of difference, like in jones.rgb?}
+% Comparison of execution time of dual and dual-00Aug23preDiag:
+% clipped by diagonals and clipped only about zeros
+% (i.e., computing all intersections)
+
+\begin{table}
+\begin{tabular}{|c|c|c|}  	\hline
+Data set & Time, clipping immediately around zeroes (seconds) & Time, clipping at diagonal tangents\\ \hline
+1 & ? & ? \\ \hline
+2 & ? & ? \\ \hline
+3 & ? & ? \\ \hline
+\end{tabular}
+\caption{Improved efficiency through clipping}
+\label{tab:speed}
+\end{table}
+}
+
+% -----------------------------------------------------------------------------
+
+\subsection{Related work on bitangency}
+\label{sec:prevcommon}
+
+\begin{itemize}
+\item head-on comparison with implicit solution (implement implicit?)
+\item complexity analysis
+\end{itemize}
+
+% MAKE IT SIMPLE: INTERSECTION OF PARAMETRIC RATHER THAN INTERSECTION OF IMPLICIT;
+% SIMPLE SUBDIVISION OF PARAMETRIC INTERSECTION RATHER THAN COMPLICATED SUBDIVISION OF PARIDA.
+
+In the introduction, we saw that the classical solution to the bitangents
+of the parametric curves $C$ and $D$ of degree $n$
+reduces to the intersection of two implicit curves $f(s,t)=0$ and $g(s,t)=0$
+of degree $2n-1$.
+We would like to compare this implicit solution to our parametric one.
+Suppose that $C$ and $D$ are Bezier splines.
+Unfortunately, the implicit curve solution does not take advantage
+of the Bezier structure of the original curves,
+and is actually undermined by it.
+$f$ and $g$ are piecewise polynomial and 
+we must reduce them to their constituent polynomials in order
+to apply the basic solution (see below), resulting
+in many polynomial intersection pairs.
+
+The solution for a pair of polynomials is itself rather expensive.
+Suppose that we have decomposed the implicit intersection into
+its constituent polynomial implicit intersections.
+The solution for polynomials $f$ and $g$ is as follows.
+We must compute and solve the resultant of $f$ and $g$
+with respect to both $s$ and $t$, which isolates the $O(4n^2)$ $s$- and 
+$t$-coordinates of the intersections.
+We must then evaluate $f(s,t)$ and $g(s,t)$ for all $O(16n^4)$ parameter pairs
+to filter out the true intersections.
+Each evaluation of $f$ and $g$ involves the evaluation of 
+the two curves $C(s)$ and $D(t)$ and their hodographs $C'(s)$ and $D'(t)$.
+% Therefore, this is a time-consuming computation.
+% This computation depends on the fact that $f$ and $g$ are polynomial
+% (for the resultant).
+\Comment{
+The $s$-coordinates $\{s_i\}$ of the intersections are found by computing
+the Sylvester resultant of the two polynomials with respect to $s$, $R_s(f,g)$,
+and solving this univariate equation of degree $(2n-1)^2$ in $s$.
+The $t$-coordinates $\{t_j\}$ of the intersections are found similarly, 
+by solving $R_t(f,g)=0$.
+This generates a superset $\{(s_i,t_j)\}$ of the intersections,
+which must be filtered down to the intersections by evaluating
+$f(s_i,t_j)$ and $g(s_i,t_j)$ for all pairs, saving those pairs that
+satisfy both equations.
+}
+
+In contrast, the reduction of bitangency to Bezier curve intersection
+takes advantage of the efficiency and stability of operations 
+on Bezier curves (e.g., divide-and-conquer by subdivision and the convex-hull
+property).
+The clipping of the Bezier curves (all segments lie inside the strip 
+$x \in [-1,1]$) also contributes strongly to efficient intersection.
+\Comment{
+There are also advantages to working in a dual space where points directly correspond
+to tangent lines (the points of the curves $f(s,t)$ and $g(s,t)$ in parameter space have
+no direct correspondence with tangents).
+}
+
+% (and require translation to a polynomial basis
+% from the Bernstein basis, for the calculation of resultants).
+% ({\bf Or is there a resultant of Bezier polynomials?})
+
+Another solution to bitangents has been proposed by 
+Parida and Mudur \cite{parida95}, using a geometric divide-and-conquer approach.
+Their solution works as follows.
+The curves are first decomposed into 'C-shaped curves', convex segments
+monotone in tangent direction.
+Each pair of C-curves, one from each curve, is compared to determine
+if the pair can define a bitangent, as follows.
+The pair is first reparameterized and clipped so that the C-curves
+share the same parameter interval and have the same tangent directions at the endpoints. 
+If certain rejection criteria involving the tangent range are satisfied,
+the pair is rejected.
+If the two C-curves are pseudo-linear, a test for a bitangent is
+directly applied.
+Otherwise, both C-curves are subdivided at their shoulder points (the point
+whose tangent is parallel to the chord of the endpoints) and the process
+is repeated recursively.
+The subdivision involved in this solution is more complicated than the
+simple midpoint subdivision of Bezier intersection,
+requiring the calculation of a shoulder point at each subdivision
+and reparameterization.
+Moreover, an initial decomposition into C-curves is expensive, and 
+there is more subdivision.
+% A great deal of decomposition would be required for complicated examples
+% such as Figure~\ref{fig:result1234} and \ref{fig:result6789},
+% which are much more complicated than the examples in \cite{parida95}.
+
+% Moreover, it does not lead to a generalizable solution.
+
+We observe that \cite{sederberg90} solves a special case of the 
+bitangent problem, showing how to compute the points of tangency of two plane Bezier curves
+(i.e., an intersection point of the curves where they share the same tangent).
+
+% -----------------------------------------------------------------------------
+
+\section{Tangents through a point}
+
+% -----------------------------------------------------------------------------
+
+\subsection{Relationship to pole/polar theory}
+
+% -----------------------------------------------------------------------------
+
+\section{The smooth visibility graph}
+
+% -----------------------------------------------------------------------------
+
+\bibliographystyle{plain}
+\begin{thebibliography}{99}	% {Lozano-Perez 83}
+
+\bibitem{bajajkim87}
+Bajaj, C. and M.-S. Kim (1987)
+Convex hull of objects bounded by algebraic curves.
+Technical Report CSD-TR-697, Computer Science, Purdue University.
+
+\bibitem{jj01b}
+Johnstone, J. (2001)
+Smooth visibility from a point.
+39th Annual ACM Southeast Conference.
+Athens, Georgia, ACM Press, 296--302.
+
+\ifJournal
+\bibitem{kim89}
+Kim, M.-S. (1989)
+Motion Planning with Geometric Models.
+Ph.D. thesis, Computer Science, Purdue University.
+\fi
+
+\bibitem{lasser89}
+Lasser, D. (1989)
+Calculating the self-intersections of Bezier curves.
+Computers in Industry 12, 259--268.
+
+\bibitem{parida95}
+Parida, L. and S. Mudur (1995)
+Common tangents to planar parametric curves: a geometric solution.
+Computer-Aided Design 27(1), 41--47.
+
+\ifJournal
+\bibitem{rockwood90}
+Rockwood, A. (1990)
+Accurate display of tensor product isosurfaces.
+Visualization '90, 353--360.
+\fi
+
+\bibitem{sederberg90}
+Sederberg, T. and T. Nishita (1990)
+Curve intersection using Bezier clipping.
+Computer Aided Design 22(9), 538--549.
+
+\end{thebibliography}
+
+% -----------------------------------------------------------------------------
+
+\section{Appendix}
+
+\Comment{
+\begin{defn2}
+A {\bf bitangent} of the curves C and D is a line that is tangent to both C and D.
+We do not distinguish whether the line is tangent at one or more points
+of each curve.
+A {\bf bitangent of a single curve} C is a line that is tangent to C at two or more
+distinct points.
+\end{defn2}
+}
+
+% We review the relationship of projective space to rational Bezier curves.
+
+% \begin{defn2}
+% {\bf Projective 2-space} $P^2$ is the space 
+% $\{(x_1,x_2,x_3) : x_i \in \Re, \mbox{ not all zero}\}$
+% under the equivalence relation $(x_1,x_2,x_3) = k(x_1,x_2,x_3),\ k \neq 0 \in \Re$.
+% \end{defn2}
+
+\Comment{
+\begin{figure}
+\vspace{8in}
+\special{psfile=/usr/people/jj/modelTR/6-dual/img/alg14.ps}
+\caption{Our algorithm}
+\label{fig14}
+% uses dual-00Aug23preDiag ob2.rawctr, a-curves only
+% sgi2ps -C w -O alg14.ps -z .9 -N 2 alg1.rgb alg2.rgb alg3.rgb alg4.rgb
+% The steps of the basic algorithm are illustrated in Figure~\ref{fig14},
+% where we actually use the \atangs of Section~\ref{sec:infinity}.
+\end{figure}
+}
+% ADD THE FOLLOWING CAPTIONS MANUALLY:
+% Two curves (left) and their \tangs (right)
+% Intersections of \tangs in dual space
+% Associated bitangents in primal space
+% Visible bitangents
+
+\Comment{
+\twocolumn
+
+\begin{figure}
+\vspace{2in}
+\special{psfile=/usr/people/jj/modelTR/6-dual/img/alg1.ps hoffset=-50}
+\caption{Two curves (left) and their \tangs (right)}
+% sgi2ps -C w -z .6 -O alg1.ps alg1.rgb
+% tops alg1.rgb -m 4 1.5 > alg1.ps
+\label{fig:alg1}
+\end{figure}
+
+\begin{figure}
+\vspace{2in}
+\special{psfile=/usr/people/jj/modelTR/6-dual/img/alg2.ps hoffset=-50}
+\caption{Intersections of \tangs in dual space}
+% sgi2ps -C w -z .3 -O alg2.ps alg2.rgb
+\label{fig:alg2}
+\end{figure}
+
+\begin{figure}
+\vspace{2in}
+\special{psfile=/usr/people/jj/modelTR/6-dual/img/alg3.ps hoffset=40}
+\caption{Associated bitangents in primal space}
+% sgi2ps -C w -z .3 -O alg3.ps alg3.rgb
+\label{fig:alg3}
+\end{figure}
+
+\begin{figure}
+\vspace{2in}
+\special{psfile=/usr/people/jj/modelTR/6-dual/img/alg4.ps hoffset=40}
+\caption{Visible bitangents}
+% sgi2ps -C w -z .3 -O alg4.ps alg4.rgb
+\label{fig:alg4}
+\end{figure}
+
+\clearpage
+\onecolumn
+}
+
+\Comment{
+\begin{figure}
+\vspace{2in}
+\caption{Switching from (a) a single tangential curve to (b) two clipped tangential curves}
+\end{figure}
+}
+
+\begin{figure}
+% \vspace{8in}
+% \special{giffile=/usr/people/jj/modelTR/6-dual/img/result1.gif}
+\caption{Bitangents}
+\label{fig:result1234}
+% sgi2ps -C w -O result1234.ps -z .9 -N 2,2 result1.rgb result2.rgb result3.rgb result5.rgb
+% dual ob1.rawctr
+\end{figure}
+
+\begin{figure}
+% \vspace{8in}
+% \special{psfile=/usr/people/jj/modelTR/6-dual/img/result6789.ps}
+\caption{More bitangents}
+\label{fig:result6789}
+% sgi2ps -C w -O result6789.ps -z .9 -N 2,2 result6.rgb result7.rgb result8.rgb result9.rgb
+% 6-7: dual -p -.2 .05 ob2.rawctr
+% 7-8: dual -p 0 -1 ob3.rawctr
+\end{figure}
+
+{\bf Build lots of applets to advertise this research,
+including tangential curves, duality, visibility graph.}
+
+\subsection{Visibility graphs of curved environments and shortest paths}
+
+\subsection{Shading with curved area lights}
+
+\subsection{Curved Minkowski sums, for curved robots}
+
+(The following is a reasonable topic in the context of my work on 
+swept surfaces and envelopes, but unrelated to tangential computation
+and curves on surfaces.)
+Curved extension of Minkowski sum (see Bajaj and Kim, Generation of Configuration
+Space Obstacles: The Case of Moving Algebraic Curves
+and Compliant Motion Planning with Geometric Models).
+That is, for a non-point robot, the robot must first be shrunk to a point
+and the obstacles expanded by their Minkowski sum with the robot
+in order to apply the visibility graph algorithm.
+Typically the robot and obstacles have been polygonal.
+(A circular robot has also been dealt with by Yap.)
+We have shown how to deal with curved obstacles.
+Now we want to deal with a curved robot.
+
+\subsection{Other tangential relationships from \tangs}
+
+are tangents of the dual curve = points of the original curve? (test empirically)
+proof: bitangents of dual curves must be intersections in original space, 
+	by symmetry, thus tangents of dual must be points of original curve
+a way to compute the envelope of a family of lines:
+	translate family of lines to dual space, where it becomes a curve;
+	compute the tangents of this dual curve (hodograph), 
+	whose duals become the envelope curve in the original space
+	[is this the striction curve of the ruled surface?]
+	not interesting in 2-space, but analogue in 3-space would be interesting:
+	computing envelope of planes
+	
+Hypothesis: Consider a plane moving through 3-space.
+	Its image in dual space is a curve (in 3-space).
+	The tangents of this space curve are lines in dual space.
+	I believe that as points dualize to planes and planes to points,
+	lines dualize to lines.
+	If so, the tangent lines of the space curve in dual space
+	(which form a ruled surface, actually a tangent developable)
+	dualize to a ruled surface in the primal space.
+	Could this be the envelope of the moving planes?
+
+\subsection{Common tangents of curves on surfaces}
+
+See paper.tex in modelTR/6-dual/onS2 directory
+
+\subsection{Common tangents on \Sn{2}}
+
+See paper.tex in modelTR/6-dual/onS2 directory
+
+\subsection{Common tangents on \Sn{3}}
+
+ditto.
+
+\subsection{Common tangents on developable surfaces}
+
+A geodesic on a developable surface is also tractable:
+it is a rolled-up line.
+
+
+\subsection{Dual curves of space curves}
+
+We have shown how to compute the dual of a plane curve and a surface.
+What about a space curve?
+Unfortunately, duals only exist for objects of codimension 1.
+(Define codimension.)
+The tangent of a space curve is a line in 3-space, which can no longer
+be expressed as a single linear equation since it is no longer a hyperplane.
+Consequently, the dual of a space curve tangent, and thus of a space curve,
+is undefined.
+
+\subsection{Common tangents of two subdivision curves}
+
+\subsection{Scraps}
+
+The tangent space of a curve is a smooth one-dimensional family of lines.
+A line can be represented by a point in \plucker space or a point in dual space,
+and a continuous one-dimensional line family becomes a curve 
+in the \plucker or dual space (henceforth, \plucker or dual curve).
+We are interested in the representation of curve tangent spaces as
+\plucker or dual curves.
+We are also interested in the computation of bitangents between
+plane curves through the intersection of \plucker or dual curves.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+[To get around the instability of points at infinity,
+one may use two interpretations of the curve in projective space:
+the first with $x_i$ as the projective coordinate and the second
+with $x_j$ ($i \neq j$) as the projective coordinate.
+In this scheme, a one-dimensional family of lines would be represented
+by two curves in image space (e.g., dual space or Plucker space),
+which are theoretically redundant but, in practice, map different parts
+of the family to infinity and thus together allow robust treatment of all parts
+of the family, as long as wrong solutions arising due to instabilities
+near infinity can be detected.
+This detection of wrong solutions is possible with bitangents, 
+since it is simple to determine
+if a candidate tangent is actually a bitangent.
+
+This leads to the following algorithm:
+\begin{enumerate}
+\item Intersect dual curves using $x_3$ as projective coordinate.
+\item Intersect dual curves using $x_2$ as projective coordinate.
+\item Use all intersections as candidates.  Reject solutions that
+	do not yield bitangents.
+\end{enumerate}
+]
+
+[Luckily, we have a choice of which coordinate to choose as the projective one
+and not all of these choices can have a zero at the same point.
+Thus, for any given point, we can choose the projective coordinate to be
+a nonzero one.
+Or in practice, we can compute all three curves, using all choices of projective
+coordinate, and perform the computations with respect to all these curves.]
+
+% -----------------------------------------------------------------------------
+
+\section{Related papers}
+
+\begin{itemize}
+\item Web site demos of the tangential curve system
+\item Tangential surfaces (teapot)
+\item The convex hull (and visibility graph?) of smooth curves
+\begin{itemize}
+\item culling invisible bitangents
+\item efficient calculation a la Welzl
+\end{itemize}
+\item The kernel of a curve and surface
+\begin{itemize}
+\item computing a point of the kernel (so that it can be made the origin
+		of the duality)
+\item computing the convex hull in dual space
+\item dualizing the hull back to primal space
+\end{itemize}
+\item On the computation of bitangency
+\begin{itemize}
+\item	2nd half of SMI paper
+\item   concentration on applications of visibility and its computation
+\item   visibility graph discussion
+\item   special case of tangents through a point and pole/polar discussion
+\end{itemize}
+\item Chaikin tangential curves (+ Catmull-Clark tangential surfaces?)
+\item Bitangent developables of ringed surfaces (with Myung-Soo)
+\item Smooth shadows of curves
+\end{itemize}
+
+
+
+\end{document}

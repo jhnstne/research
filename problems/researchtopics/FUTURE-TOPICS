@@ -1,0 +1,103 @@
+{\bf Global research structure}
+
+I.   Extension of solid primitives
+II.  Medial axis, bisector
+IV.  Classification.
+
+Extension of solid primitives (i.e., definition of efficient operations on 
+		on an extended vocabulary)
+
+	Intersection
+	Blending
+	Representation.
+
+	Cyclides
+	Ringed surfaces
+	Ruled surfaces
+	Quadrics (e.g., when can they be blended easily? simpler tests for
+			planar intersection; geometric representation for
+			hyperboloids of one sheet)
+
+	Future: more swept surfaces (e.g., ringed/ringed, ruled/ruled,
+			superquadrics)
+*		generalized patch representations of cyclides (e.g., tetrahedral)
+		intersection of cyclide patches
+*		projective cyclide extensions
+		[traditional line intersection algorithm seems suboptimal:
+		 sweep/observation.tex]
+		other envelopes of conics (other than quadrics, cyclides, Blutel
+			surfaces)
+		can you define a more general inversion operator whose 
+			`spherical' mirror can better separate data (via
+			inversion) for set classification?
+			e.g., make two sets linearly separable that used
+				to only be separable by a complex curve
+			suggested by Isaac Bankman of APL
+
+Medial axis, bisector
+
+	Points: Voronoi diagram
+	Medial axis of simple polygon (Lee)
+	Lines and circles (Yap).
+	Approximate computation of other medial axes.
+
+	Safest path, skeleton, equal partition, feature size/width
+
+	Point/parametric curve: exact computation of bisector.
+
+	Future: Medial axis of polyhedron, surfaces
+			e.g., to compute angle of two bronchial tubes
+		Fast approximate solution for collections of simple curves.
+		Bisector of curves in 3-space.
+		Removal of fragileness to local perturbation.
+
+Classification.
+		
+	Creation of atlas
+		concise for distribution, added structure over patient model
+		polyhedral is not sufficiently concise or exact
+
+	Identification of landmarks (feature extraction)
+*		Parabolic, umbilic points; lines of curvature; extrema.
+		% Other intrinsic geometric points of a Bezier surface
+
+	Mapping between structures.
+		Deformation of atlas organ to patient's organ.
+
+Surface and solid models for surgery.
+
+	inquiry, visualization, and planning 
+
+	How wide a catheter can fit through this passage?
+	What is the boundary of this organ/bone?
+	Give me a good reconstruction of this data.
+
+Miscellaneous medical projects.
+
+	Radiation Oncology
+		Active imaging: real time location during surgery
+			necessary for registration to moving patient 
+			during surgery
+		Traditional beam optimization
+		Verification of plan delivery
+			sophisticated plan may backfire
+		Functional defn of geometry
+			e.g., beam tolerance of each region
+			(classification)
+	
+	Neurosurgery
+		Registration to moving head.	
+		Optimal path to tumor
+
+	Craniofacial surgery
+		Surgical simulation of adding bone
+		`Morphing' abnormal structure to normal
+		Creating optimal model under degrees of freedom of bone mvt.
+
+	Robot guided surgery
+
+		Camera positioning, camera tracking of feature
+		Real time image processing and modeling
+		Stereoscopic vision
+		Registration to deformable soft tissue: no longer 6dof rigid
+		Flexible scopes and navigation

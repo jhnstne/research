@@ -1,0 +1,557 @@
+\documentstyle[12pt]{article} 
+
+\newif\ifFull
+\Fullfalse
+
+\makeatletter
+\def\@maketitle{\newpage
+ \null
+ %\vskip 2em                   % Vertical space above title.
+ \begin{center}
+       {\Large\bf \@title \par}  % Title set in \Large size. 
+       \vskip .5em               % Vertical space after title.
+       {\lineskip .5em           %  each author set in a tabular environment        \begin{tabular}[t]{c}\@author 
+        \end{tabular}\par}                   
+  \end{center}
+ \par
+ \vskip .5em}                 % Vertical space after author
+\makeatother
+
+% non-indented paragraphs with xtra space
+% set the indentation to 0, and increase the paragraph spacing:
+\parskip=8pt plus1pt                             
+\parindent=0pt
+% default values are 
+% \parskip=0pt plus1pt
+% \parindent=20pt
+% for plain tex.
+
+\newenvironment{summary}[1]{\if@twocolumn
+\section*{#1} \else
+\begin{center}
+{\bf #1\vspace{-.5em}\vspace{0pt}} 
+\end{center}
+\quotation
+\fi}{\if@twocolumn\else\endquotation\fi}
+
+\renewenvironment{abstract}{\begin{summary}{Abstract}}{\end{summary}}
+
+\newcommand{\SingleSpace}{\edef\baselinestretch{0.9}\Large\normalsize}
+\newcommand{\DoubleSpace}{\edef\baselinestretch{1.4}\Large\normalsize}
+\newcommand{\Comment}[1]{\relax}  % makes a "comment" (not expanded)
+\newcommand{\Heading}[1]{\par\noindent{\bf#1}\nobreak}
+\newcommand{\Tail}[1]{\nobreak\par\noindent{\bf#1}}
+\newcommand{\QED}{\vrule height 1.4ex width 1.0ex depth -.1ex\ } % square box
+\newcommand{\arc}[1]{\mbox{$\stackrel{\frown}{#1}$}}
+\newcommand{\lyne}[1]{\mbox{$\stackrel{\leftrightarrow}{#1}$}}
+\newcommand{\ray}[1]{\mbox{$\vec{#1}$}}          
+\newcommand{\seg}[1]{\mbox{$\overline{#1}$}}
+\newcommand{\tab}{\hspace*{.2in}}
+\newcommand{\se}{\mbox{$_{\epsilon}$}}  % subscript epsilon
+\newcommand{\ie}{\mbox{i.e.}}
+\newcommand{\eg}{\mbox{e.\ g.\ }}
+\newcommand{\figg}[3]{\begin{figure}[htbp]\vspace{#3}\caption{#2}\label{#1}\end{figure}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\prf}{\noindent{{\bf Proof} :\ }}
+\newcommand{\choice}[2]{\left( \begin{array}{c} \mbox{\footnotesize{$#1$}} \\ \mbox{\footnotesize{$#2$}} \end{array} \right)}      
+\newcommand{\ddt}{\frac{\partial}{\partial t}}
+
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{notation}{Notation}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{defn2}{Definition}
+
+% \ifFull                                          
+\SingleSpace
+% \else
+% \DoubleSpace
+% \fi
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\textheight}{8.75in}
+\setlength{\textwidth}{6.5in}
+\setlength{\headsep}{.2in}
+
+% ****************************************************************************
+
+\begin{document}
+
+\title{Geometric modeling for the capture of shape}
+\author{John K. Johnstone\thanks{Dept. of Computer and Information 
+        Sciences,
+        University of Alabama at Birmingham,
+        125 Campbell Hall, 1300 University Boulevard,
+        Birmingham, Alabama  35294-1170 USA, johnstone@cis.uab.edu.}}
+% \maketitle
+
+\begin{abstract}
+\ \ 
+\end{abstract}
+
+% ****************************************************************************
+
+\section{Introduction}
+
+The major goal of geometric modeling is the formal definition of shape.
+A major distinction can be made between the {\em design} of a shape
+and the {\em capture} of a shape;
+that is, between the definition of the shape of an object
+that is being actively designed and the definition of the shape of an object 
+that already exists.
+In automobile or ship design, the most classical of modeling applications, 
+the shape is designed:
+the modeler has control of the shape, which can be altered for functional
+or aesthetic reasons, and the object does not yet exist, except in the
+mind of the designer.
+On the other hand, in the reverse engineering of objects or the reconstruction
+of MRI and CT images in medical imaging, the object already exists
+and the challenge is to formally define this shape from partial information.
+The research program presented in this proposal concerns this type of problem:
+the capture of the shape of an existing object.
+
+In shape capture, the fact that the object already exists introduces
+both challenges and opportunities.
+The attempt to match the shape of the object as closely as possible,
+yet with an elegant and efficient representation, is the major challenge.
+However, the presence of the actual object introduces the possibility
+of using the object as an active guide to the modeling.
+Essentially, the object may be able to help us to make correct guesses
+about its shape from the partial information we have about it (e.g, a finite 
+number of points, in the form of probes or slices).
+
+Our study of shape capture is motivated and guided by three important
+areas of current work: contour reconstruction, scattered data reconstruction, 
+and swept object reconstruction.
+The reconstruction of scattered point data into smooth surfaces
+({\em scattered data reconstruction})
+is an active research problem in geometric modeling and computer graphics
+(e.g., \cite{Hoppe,MeyersSurvey,Sequin,Seidel}).
+A major application of this research is the reverse engineering
+of objects from probes or laser scans.
+This includes classical reverse engineering of a part as well as
+the generation of object databases for virtual reality and graphics.
+The data is a set of points, assumed to lie on the boundary of the object.
+
+The reconstruction of contour data into smooth surfaces
+({\em contour reconstruction}) is a related problem, also of active interest.
+As opposed to the points of scattered data which are scattered across the
+object with no particular order,
+contour data consists of points organized into sequentially ordered slices
+(Figure~\ref{LVslices,Kneeslices}).
+The application that drives this problem is 
+the reconstruction of MRI and CT slices in medical imaging,
+as well as the contours generated from geophysical data.
+The generation of a model of an entire organ (or bone, arterial system, and so on)
+rather than a finite number of slices of this object
+has advantages in diagnosis (especially by non-radiologists),
+surgical planning, analysis of the organ (for example, 
+wall thickness \cite{jjsloanCIC95}), surgical simulation,
+training, design of prosthetic devices and implants, 
+and pre- or intra-operative visualization.
+The data slices in contour reconstruction are usually a single set 
+of parallel slices.
+However, the slices need not be parallel and there are sometimes
+several sets of parallel slices, usually mutually orthogonal,
+notably in neurological imaging.
+The number and spacing of slices varies, but there is usually a gap
+of several millimetres between slices.
+Because CT-scan imaging involves harmful radiation\footnote{Magnetic resonance
+	imaging does not involve any radiation and there is no evidence
+	that it is harmful to the patient.}
+and because of the time and expense involved in dense slicing (as well
+as the inherent limits of imaging techniques), 
+slices are often sparsely sampled across the object.
+The slices are segmented into polygonal contours, either manually, semi-automaticaly,
+or automatically.
+
+The last problem of interest in shape capture 
+is the reconstruction of the surface or solid swept out
+by an object moving through 3-space ({\em swept object reconstruction}).
+This is useful for interference detection, definition of solids in machining,
+design of a richer vocabulary of surfaces for modeling,
+and the reconstruction of the path followed by an object.
+We assume that the data is a finite number of object frames (much like
+keyframes in animation), ordered in time, each frame representing
+a position and orientation of the object.
+This data could be output by the moving object, captured by a vision system,
+or input by a designer.
+
+In all of these shape capture problems,
+we are given a finite amount of data and wish to 
+construct a full model of the object's shape consistent with this data;
+that is, a `good guess' at the true shape.
+The guess should account for all of the known information (points in scattered
+data reconstruction, ordered points in contour reconstruction, and
+shape of sweeping object and position/orientation frames in sweep
+reconstruction).
+However, we should also consider the accuracy of the known information:
+for example, in contour reconstruction, the segmentation of the MRI/CT 
+slice (and even the imaging technique itself)
+is usually noisy (and thus so are the points on the contours),
+whereas in sweep reconstruction we can assume 
+that the shape of the sweeping object is exactly maintained
+(and, usually, that we exactly know this shape).
+	% don't want to go down the following road: these inaccuracies must be removed
+	% at the level of segmentation not by the model magically determining that
+	% they are irrelevant.
+	% `and, even if we assume that it is perfect,
+	% the object may contain small features that are of little relevance 
+	% (for example, papillary muscle on the surface of the left ventricle 
+	% is not clinically interesting) and that are thus effectively `inaccuracies' in the data.
+As a result, we shall develop methods that either approximate
+the given point data or interpolate up to a user-specified tolerance,
+rather than methods that exactly interpolate the point data.
+However, we shall assume that the shape of the sweeping object
+is preserved exactly in sweep reconstruction.\footnote{We shall also 
+	exactly interpolate the position/orientation frames of the sweeping
+	object, thus assuming that they are accurate, although this is not 
+	necessary.}
+
+THIS PARAGRAPH IS TEMPORARY AND UNREFINED:
+It is interesting to note that the standard methods of shape capture
+are almost exclusively interpolation methods, which implies that they assume
+exact data.
+(The only exception is approximation during the construction of triangulation
+in scattered data reconstruction.)
+It is useful to consider the use of interpolation and approximation
+in the present literature on shape capture.
+Interpolation of point data is standard in contour reconstruction.
+SAVE THIS DISCUSSION FOR THE IN-DEPTH DISCUSSION OF METHOD.
+Consider scattered data interpolation first.
+Scattered data reconstruction has two main stages:
+triangulation of the point data and smoothing of the triangulation.
+A triangulation of the data defines a topology for the underlying object.
+Most methods develop triangulations that approximate the scattered data
+and concentrate on correctly capturing its topology.
+Many methods focus solely on the second stage,
+the generation of a good smooth surface from a triangulation, 
+assuming that the triangulation already exists.
+
+
+We have just seen that the modeling is constrained by the actual object.
+However, there is still much intelligent guess-work in the reconstruction,
+and of course this is where the quality of the reconstruction is determined.
+How good is the guess, and how elegantly is the guess represented?
+We are interested in the formal analysis of this quality;
+in particular, in the development of tools to measure the fidelity of the reconstruction
+through comparison with the actual object (Section~\ref{sec-quality}).
+
+We are also interested in developing a library of test cases
+for the methods, especially contour reconstruction and
+scattered data reconstruction (Section~\ref{sec-library}).
+This will simplify evaluation and comparison of reconstruction methods.
+
+We shall now discuss our approaches to the above three problems,
+starting with swept object reconstruction, then contour and
+scattered data reconstruction.
+
+The goal of interpolation is to fill in the gaps between points in a reasonable way.
+We instead concentrate on finding the best partner of a given point.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A comparison of the approaches used in scattered data reconstruction 
+and contour reconstruction is illuminating.
+Scattered data reconstruction has two main stages:
+triangulation of the point data and smoothing of the triangulation.
+A triangulation of the data defines a topology for the underlying object.
+Most methods develop triangulations that approximate the scattered data
+and concentrate on correctly capturing its topology.
+IS THIS TRUE? (Hoppe: yes; others: ?)
+Many methods focus solely on the second stage,
+the generation of a good smooth surface from a triangulation, 
+assuming that the triangulation already exists.
+
+% ***********************************************************************
+
+\section{Swept object reconstruction}
+
+Important known points:
+Creation of map in free 4-space.
+
+
+Important known methods (others and ours):
+
+Open problems:
+
+	`interesting optimizations/spinoffs of previous work':
+
+	A1. reduction of degree of exact swept surface from sweeping curve
+
+	A2. spherical texture map through $M^{-1}$	(with Ken)
+			(Ebert texture book)
+
+	`fundamental improvements':
+
+	B1. rational flythrough (through-the-lens camera control)
+		specify flight path and sight path (path that
+		you should point at along the path, may or may not be
+		parameterized in coordination with flight path)
+
+	B2. sweeping surface/solid representation as rational surfaces
+		requires envelopes: concentrate on the intersection curves
+			of instantaneously close surfaces (?)
+		sweeping intersection curve idea `might' work
+
+	Proposed research (as in Hopcroft/Hoffmann):
+
+NOTHING	B3. allow object to change its shape in more interesting ways,
+		but still defined by user
+
+	`related animation problems'
+	
+	D1. quaternion GUI: spec of orientation by quaternions is not intuitive
+	D2. 
+
+
+	`extreme fringe/weird':
+
+	C1. when do sweeps preserve r-sets? that is, do not introduce dangling edges
+
+	C2. principal normal developables: does there exist two asymptotic curves?
+		(with Leslie Coghlan)
+
+	C3. ruled/ruled intersection (as swept surface rather than implicit)
+
+
+% ***********************************************************************
+
+\section{Contour reconstruction}
+
+	Review of previous reconstruction methods.
+	Review of our reconstruction method.
+		Future: Can test alternative choices of best partner.
+	Adaptation to Arbitrary contours
+	Adaptation to scattered data
+	Coronal/sagittal/transaxial reconstruction
+	Time sequence: volume preserving, exponential stress
+	
+
+	Smooth reconstruction of contours of object of *arbitrary* topology 
+*	Coronal/sagittal/transaxial reconstruction
+		at least use multiple slices to test quality of axial reconstructions
+		perhaps use to disambiguate branching problem
+		3-way Coons?
+*	Volume preserving reconstructions (Sederberg, Chirikjian):
+		i.e., introduce information across phases (e.g., for beating heart
+		or moving object of any type) to improve reconstruction
+		good criteria for biological data
+		
+		given a mesh, describe the degrees of freedom
+		to preserve the volume of the surface while changing the mesh
+	[Feature detection (curvature-based) and preservation]
+
+		
+	oriented particles to improve fit (optimize and relax) of reconstruction	
+
+	volume preserving Bezier surfaces
+
+---------------------------------------------------------------
+
+FIGURES: show quality of our cylindrical reconstruction, heart reconstruction,
+knee reconstruction.
+
+
+The presence of slices in contour reconstruction allows a different approach,
+motivated by sweeping and flow.
+
+Most work on contour reconstruction has concentrated on the construction
+of a good triangulation of the points of the contours.
+
+We shall: 
+- Concentrate on smoothing of triangulation as opposed to creation of triangulation (this is similar emphasis as scattered data)
+- Use approximation of data rather than interpolation.
+  Approximate the triangulation, which is exact interpolating
+  (as opposed to scattered data where the triangulation is interpolated
+  but the triangulation itself is approximate).
+
+
+% ***********************************************************************
+
+\section{Analysis of Quality}
+\label{sec-quality}
+
+The implicit goal of all reconstruction is to match as closely as possible the
+shape and topology of an object, whether it is a mechanical part
+in reverse engineering or a liver in medical imaging, 
+from a set of discrete samples.
+The data used in reconstruction comes from an actual 
+object, which means that there is a bonafide `gold standard' against which
+to test the quality of the reconstruction.
+However, the only ways that we have to gather information about the object
+are discrete: a finite number of point probes or a finite number of slices.
+Thus, unless the object is artificial mathematical data
+(such as a torus), its exact geometry cannot be 
+determined.\footnote{Some global information about the object 
+	can be determined, such as its volume, say by liquid displacement.}
+
+The common way to evaluate the quality of a reconstruction
+is based on visual comparison with the original object,
+combined with analysis of the inherent quality of the smooth surface
+(independent of the original object) such as curvature, reflection lines,
+and isophotes \cite{seidel,hagen,sequin}.
+Combined with all of these methods, we want to add more methods for
+assessing the quality of the reconstruction directly from the original object.
+
+One way to simulate comparison with the actual object is
+to hold back some samples for later comparison ({\em oversampling}).
+For example, an MRI scan may produce 40 slices: 10 of these slices
+can be chosen (say every 4th slice) and fed to a contour reconstruction method.
+We can then compare the resulting surface with the remaining 30 slices,
+and evaluate the accuracy of their prediction.
+(This is similar to the use of control samples in scientific experiments.)
+There are several ways to evaluate how well a surface matches a given slice,
+such as to
+(a) compute the distance of each point of the slice to the surface;
+(b) compute the section of the surface in the slice's plane (assuming that
+the slice is planar) and compare its area with the slice's area;
+or (c) compute the surface section and find its maximum or average distance
+    from the polygonal contour of the data slice.
+
+For example, we have compared our reconstruction method of Section~\ref{}
+with other methods by removing one slice, reconstructing the remaining
+slices (Table~\ref{table-skip}), and testing the quality of the estimation
+with the missing slice by method (a) above; and 
+we feel that these results are positive evidence for 
+the effectiveness of our method.
+
+\begin{table}
+\label{table-skip}
+Table of quality data on LV and knee (from CIC and extra data).
+\end{table}
+
+This oversampling method leads to a problem: the creation of dense data sets.
+If the typical number of data slices or points (in real data)
+is $n$ at spacing $s$, 
+then optimally we would like to have a data set with many more than $n$ samples
+at spacing much less than $s$ so that a valid subset of $n$ samples at spacing
+$s$ can be extracted to reflect a true typical data set.
+This can be a challenge, which we address in the next section.
+
+
+
+(1.5)  comparing isoparametric curves to original (for artificial data)
+		(Figure of cylinder)
+(2) testing global information such as area that can be determined from the actual object
+	[very difficult to get this data on real object]
+(3) using known properties of the object to optimize the reconstruction,
+    such as volume preservation or exponential increase in stress with stretching.
+	this is for series of captures of moving object (e.g., heart)
+(4) Another way to capture the true shape of a biological object
+	is to capture slices in many different directions, and we will
+	use multiple directions to analyze the accuracy of our reconstructions.
+(5) slice area/surface volume measurements for quality comparison 
+
+
+How many slices (at what distance) generate reliable reconstructions?
+either to directly guide imaging parameters or, 
+perhaps more realistically, to determine faith in reconstruction
+
+
+In short, we plan to:
+\begin{itemize}
+\item Develop a collection of methods for quality analysis of a reconstruction,
+	including both known methods such as analysis of curvature and reflection 
+	lines and new methods such as oversampling and ---.
+\item Generate and collect data sets, including large oversampled data sets 
+	and data sets from various biomedical and manufacturing domains,
+	as an object library to aid the testing and development 
+	of reconstruction systems.
+	Once this library is developed, all non-protected\footnote{Some of the
+	medical images we receive are private, but the majority are
+	public domain.}
+	data will be made accessible on the net and the World-Wide-Web.
+\item Objectively compare the existing reconstruction methods with each
+	other and with the new reconstruction methods that we develop 
+	(and have developed), 
+	using these quality-measurement tools and data sets.
+\end{itemize}
+
+
+\subsection{Gathering a Library of Data Sets}
+\label{sec-library}
+
+Extremely difficult to get good data to work with.
+A major component of any research project on reconstruction
+is the procuring of a valid data set for testing purposes.
+
+We wish to collect a library of data sets.
+We have access to:
+
+Resources:
+Cardiology data
+LV (perhaps 40 slices from Kiel)
+knee (17 slices)
+palate
+neurological data from El Gammal
+Visible Human Project and Intelligent Scissors: ASK FOR MONEY FOR 
+VISIBLE HUMAN PROJECT CD's.
+
+Oversampled contour data sets are particularly difficult to find.
+We will continue to actively collect these type of data set,
+but we will also create our own using the Visible Human Project.
+
+This is contour data.
+We will also generate scattered data sets from artificial objects
+(solid models and mathematical surfaces).
+
+U of Washington data
+cylinder, sheared cylinder, other mathematical surfaces (but as
+		scattered data and contour data)
+
+
+
+
+
+
+
+
+
+
+
+\section{The relationship between reconstruction, blending, and morphing}
+
+\section{Interpolation of rigid shape}
+\subsection{Cylindrical topology: a simple curve}
+	Where does the point go?
+\subsection{Arbitrary topology}
+
+
+
+
+
+Reconstructions aid in diagnosis, surgical planning and simulations.
+
+The geometric modeling of human anatomy
+
+\bibliographystyle{alpha}
+\begin{thebibliography}{Shoemake 85}
+
+\bibitem{bloom91}
+Bloomenthal, M. and R. Riesenfeld (1991)
+Approximation of sweep surfaces by tensor product NURBS.
+SPIE Proceedings: Curves and Surfaces in Computer Vision and Graphics II,
+Vol. 1610, 132--144.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,48 @@
+Research on contour reconstruction (thoughts on May 1, 2006)
+------------------------------------------------------------
+
+Contour reconstruction, the construction of a surface model from contours,
+is an instance of the general problem of creating a model from data points.
+It is often called reconstruction, since the most common way to find contour data is
+by probing an existing object in slices, such as CT/MR/topographic-maps/microscopy/laser-scan.
+However, it is certainly possible to gather contours independently of any pre-existing
+surface model: for example, we are presently working on the contour reconstruction of 
+cell proliferation profiles (curves plotting cell numbers against time, with each contour
+representing a different drug concentration): the surface implied by this data,
+which captures cell growth in the context of changing drug concentrations, 
+does not exist before construction.
+
+Contour data is organized into slices and has connectivity information, which
+makes it more organized than arbitrary point data.
+A contour is basically a planar polygon.
+It is a set of points confined to a plane, with some order imposed.
+The planes of the polygons of a contour dataset are assumed to be parallel.
+(It is possible to generalize to pseudo-parallel planes,
+where pseudo-parallel planes don't overlap, and preserve their relative order,
+but may stray from a plane otherwise.)
+
+The first stage of contour reconstruction is to organize the contours into 'metatubes', 
+branches that are topologically equivalent to a cylinder.
+Each metatube may be triangulated independently, and then built into a smooth surface
+(by defining isocurves through flow across the triangulation).
+The remaining challenge is to smoothly merge neighbouring metatubes.
+This involves matching of tangent ribbons, which can be inherited from neighbouring metatubes
+and incorporated into the interpolation process.
+One challenging issue is the noncircular inheritance of ribbon information between metatubes.
+Another challenge is the passoff at a branch, including the construction of a supercurve
+merging several contours and the reconstruction of the hole between the children metatubes
+and the parent metatube.
+
+For many datasets, including the research on cell proliferation profiles,
+{\bf the smooth reconstruction of a single metatube} is a significant step.
+Moreover, it suggests strategies for the reconstruction of more general branching structures, 
+through the averaging or blending of individual metatubes.
+
+Pipeline: points to polygons to curves to triangulation to isocurves to surface.
+Tools: doxygen, extreme programming
+Possible extension: flowing isocurves across an arbitrary triangulation (not organized in contours)
+Possible extension: slicing a triangular mesh to generate contours, to create smooth surfaces
+Underlying software libraries: contour triangulation, Bezier curves, Bezier surfaces
+Relevant subdirectories: ~jj/Cbin, ~jj/software/data/contourData, 
+	                 ~jj/software/project/contour/cardio/cardioSrcOnNavy (see cardio.c)
+Project directory: ~jj/software/projectSmooth/3d/contour

@@ -1,0 +1,137 @@
+grant proposal: NSG, CARGO, ONR
+	- requires development of further ideas on applications:
+		robot motion, lighting
+	  - get them ready for conference: kill 2 birds
+	- release of software would be nice
+	- journal papers can wait until award of grant (within reason)
+curve bitangents (motion) journal paper
+bisilhouette journal paper
+lighting from bisilhouettes
+
+visibility graph: smooth v-graph and shortest paths in a smooth environment
+	- journal version of SMI2001 to CAGD
+	- conference version to robotics conference, especially for surfaces
+	
+journal of SMI2002 to CAGD, with Bezier material
+
+lighting: computation of umbra and penumbra for smooth area or volume lights
+	- conference version to graphics conference
+
+subdivision curves and surfaces:
+ - bitangent mask for two subdivision curves
+ - bisilhouette of two subdivision surfaces as a subdivision surface
+ - SMI2002
+ 
+incorporation of bisilhouette into visibility complex/PetitJean/Durand work
+
+Java testbed: bitangents and dual space
+
+=================================================
+
+individual technical reports and smaller conferences on pure geometry
+
+dual space for tangents: an alternative to the tangent hodograph
+	for the representation of a plane curve's tangent space
+	hodograph is many-to-one representation of lines (many points represent
+	the same line: any point along the line from the origin);
+	and only represents tangent vectors, not lines (i.e., is dependent
+	on the original curve to define the tangent, unlike a point in
+	dual space which defines a line completely);
+	
+computation of common tangents of curves
+	(for shortest path, visibility analysis)
+	
+	- basic geometric tool
+	- improved accuracy over polygonal models
+	- Shape Modeling
+	
+computation of pole/polar for curves
+
+convex hull of curves
+	
+computation of visibility graph of smooth curves
+	(analysis of improvement over polygons)
+	- CIRA01 (Alberta) or ICRA02 (Washington) are possibilities
+	
+computation of common tangents of curves on S3 
+	- for motion amongst orientation obstacles
+	- combines dual tangent space work with quaternion spline work
+
+shortest path motion in orientation space
+
+common tangents of surfaces
+	- 3D motion
+	- convex hulls of surfaces
+	- true 3D lighting (a-la Teller)
+
+=================================================
+
+ruled surface intersection
+
+Ruled surface intersection is best motivated as the important
+CSG operation of intersection for a key class of surfaces, ruled surfaces.
+Particularly important if we can show that the intersection of two surfaces
+can be reduced to the intersection of ruled surfaces by finding
+two ruled surfaces in the pencil of the surfaces,
+motivated by the simplicity (hopefully) of ruled surface intersection.
+
+=================================================
+
+orientation control with quaternion splines: 
+		   3) avoiding orientation obstacles
+		   4) animation and robot motion
+
+Riemannian modeling:	- curves on other surfaces
+			- bipolars
+			- geodesics
+			- maps to surfaces
+			- texture mapping
+			- point and curve bisectors on surfaces
+		    e.g., Voronoi diagram of points on \Sn{2} or \Sn{3}
+		    (application: largest empty region of a data set on sphere,
+		    which has applications in avoiding 'polluting' poles
+		    of maps of spherical data, or locating a nuclear site
+		    furthest from population center on a surface)
+
+smooth contour reconstruction: 	- arbitrary topology cleanly
+			 	- morphing between genus: supercontour (eyeglasses)
+				- canyon saddle reconstruction (Ken)
+				- plural contour reconstruction 
+				- ganglion: quantum leap in sophistication
+
+scattered data reconstruction:	- improvement of Amenta
+				- use of contour techniques in scattered reconstruction
+				- 3D photography
+					  
+subdivision surfaces:	- intersection
+			- curves on subdivision surfaces
+
+ruled surfaces:	- good user interface
+		- generators and directrix curves on ruled surfaces
+		- intersection
+				
+emptiest point on sphere
+fairest ruled surface
+curve-interpolating curve
+inter-genus morphing
+metric for polygonal difference
+extension of visibility graph algorithm to curved environment
+	- obstacles are curved
+	- underlying space is curved (Riemannian)
+		- pole/polar theory on surfaces										  
+
+To do list:
+
+obstacle paper
+
+August 6, 1999: 
+	dual curve implementation and paper
+	Riemannian dual curves 
+	fair ruled surface paper with Jack
+	Coons patch implementation
+	dual-contour incorporation into recon.c++
+	motion editing/spacetime optimization/signal-processing application
+		of rational quaternion spline
+	'Most Natural' paper to Journal of Graphics Tools or CAGD
+	'Characterization' paper to Computers and Graphics
+	Dacheux paper

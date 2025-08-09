@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+
+\newif\ifFull
+\Fullfalse
+
+\makeatletter
+\def\@maketitle{\newpage
+ \null
+ %\vskip 2em                   % Vertical space above title.
+ \begin{center}
+       {\Large\bf \@title \par}  % Title set in \Large size. 
+       \vskip .5em               % Vertical space after title.
+       {\lineskip .5em           %  each author set in a tabular environment
+        \begin{tabular}[t]{c}\@author 
+        \end{tabular}\par}                   
+  \end{center}
+ \par
+ \vskip .5em}                 % Vertical space after author
+\makeatother
+
+% non-indented paragraphs with xtra space
+% set the indentation to 0, and increase the paragraph spacing:
+\parskip=8pt plus1pt                             
+\parindent=0pt
+% default values are 
+% \parskip=0pt plus1pt
+% \parindent=20pt
+% for plain tex.
+
+\newenvironment{summary}[1]{\if@twocolumn
+\section*{#1} \else
+\begin{center}
+{\bf #1\vspace{-.5em}\vspace{0pt}} 
+\end{center}
+\quotation
+\fi}{\if@twocolumn\else\endquotation\fi}
+
+\renewenvironment{abstract}{\begin{summary}{Abstract}}{\end{summary}}
+
+\newcommand{\SingleSpace}{\edef\baselinestretch{0.9}\Large\normalsize}
+\newcommand{\DoubleSpace}{\edef\baselinestretch{1.4}\Large\normalsize}
+\newcommand{\Comment}[1]{\relax}  % makes a "comment" (not expanded)
+\newcommand{\Heading}[1]{\par\noindent{\bf#1}\nobreak}
+\newcommand{\Tail}[1]{\nobreak\par\noindent{\bf#1}}
+\newcommand{\QED}{\vrule height 1.4ex width 1.0ex depth -.1ex\ } % square box
+\newcommand{\arc}[1]{\mbox{$\stackrel{\frown}{#1}$}}
+\newcommand{\lyne}[1]{\mbox{$\stackrel{\leftrightarrow}{#1}$}}
+\newcommand{\ray}[1]{\mbox{$\vec{#1}$}}          
+\newcommand{\seg}[1]{\mbox{$\overline{#1}$}}
+\newcommand{\tab}{\hspace*{.2in}}
+\newcommand{\se}{\mbox{$_{\epsilon}$}}  % subscript epsilon
+\newcommand{\ie}{\mbox{i.e.}}
+\newcommand{\eg}{\mbox{e.\ g.\ }}
+\newcommand{\figg}[3]{\begin{figure}[htbp]\vspace{#3}\caption{#2}\label{#1}\end{figure}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\prf}{\noindent{{\bf Proof} :\ }}
+\newcommand{\choice}[2]{\left( \begin{array}{c} \mbox{\footnotesize{$#1$}} \\ \mbox{\footnotesize{$#2$}} \end{array} \right)}      
+\newcommand{\ddt}{\frac{\partial}{\partial t}}
+\newcommand{\ovalbox}[1]{\begin{picture}(70,30)
+	\put(0,-12){\makebox(70,30){#1}} \put(35,3) {\oval(70,30)} \end{picture}}
+\newcommand{\bigovalbox}[1]{\begin{picture}(100,30)
+	\put(0,-12){\makebox(100,30){#1}} \put(50,3) {\oval(100,30)} \end{picture}}
+\newcommand{\ra}{$\rightarrow$}
+\newcommand{\lra}{$\longrightarrow$}
+
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{notation}{Notation}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{defn2}{Definition}
+
+% \ifFull                                          
+\SingleSpace
+% \else
+% \DoubleSpace
+% \fi
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\headsep}{0pt}
+%\setlength{\topmargin}{0pt}
+%\setlength{\textheight}{8.75in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\textheight}{9.00in}
+\setlength{\textwidth}{6.5in}
+\setlength{\headsep}{.2in}
+
+% ****************************************************************************
+
+\title{}
+\author{John K. Johnstone\\
+	Dept. of Computer and Information Sciences\\
+        The University of Alabama at Birmingham\\
+        125 Campbell Hall, 1300 University Boulevard\\
+        Birmingham, Alabama  35294-1170 USA.\\
+	johnstone@cis.uab.edu\\
+	http://www.cis.uab.edu/}
+
+\begin{document}
+
+(direct) acquisition of contour data:
+
+\fbox{object} \ra \ \bigovalbox{imaging/sectioning}
+\ra \ \fbox{planar images} \ra \ \bigovalbox{segmentation} \ra \ 
+\fbox{contours} 
+
+\vspace{.2in}
+
+(indirect) acquisition of contour data:
+
+\fbox{object} \ra \ \ovalbox{scanning} \ra \ \fbox{data points} \ra \ 
+\ovalbox{structuring} \ra \ \fbox{contours}
+
+\vspace{1in}
+
+{\bf Theme:} treat contours {\em always} as curves,
+	{\em never} as points or polygons.
+
+{\bf Challenge:}
+In segmentation, interactively create curves through sampled points.
+In correspondence, compute approximate centroids and junction points
+directly from curves.
+For example, centroids from a coarse sampling of curve and
+junction points from closest points or common tangents of curve.
+
+\vspace{1in}
+
+\fbox{contours} \ra \ \bigovalbox{correspondence} \ra \ \fbox{contours with topology} 
+
+\fbox{contours} \ra \ \bigovalbox{triangulation} \ra \ \fbox{contours and triangulation} \\
+\hspace*{.6in} \ra \ \ovalbox{flow} \ra \ \fbox{isoparametric curves} 
+\ra \ \fbox{isogrids}
+\ra \ \fbox{metatube patches} \\
+\hspace*{.6in} \ra \ \bigovalbox{canyon filling}
+\ra \ \fbox{metatube and canyon patches}
+
+\clearpage
+
+MRI = `magnetic resonance imaging' scan \\
+NMRL = UAB Nuclear Magnetic Resonance Lab \\
+VH = Visible Human Project data (and secondary sources) \\
+Bar = Gil Barequet's contour database \\
+LW = LiveWire segmentation algorithm \\
+i-MEST = intelligently weighted MEST algorithm \\
+j-pt = junction point \\
+Cy = Cyberware laser scan \\
+Wash = University of Washington repository \\
+Stan = Stanford University repository \\
+resampling = may or may not preserve original points; for good flowlines \\
+* = resample at this stage to use existing Sloan data sets \\
+source of planar images: MRI images from NMRL and VH \\
+source of contours: NMRL, VH, Bar \\
+correspondence uses i-MEST and j-pt identification \\
+contours after correspondence: evenly and densely sampled; scaled to unit cube;\\
+	ALIAS info for branching; ADJPREV and ADJNEXT for branching and
+	identification of junction points (canyons);
+	rotated so that each contour starts with a junction point (if one exists) \\
+contours after triangulation: both merged supercontours and original contours
+FKU = Fuchs-Kedem-Uselton minimal area triangulation \\
+ACF = Augmented Contours Format
+
+\clearpage
+
+\fbox{biological specimen} $\stackrel{\mbox{microscopy}}{\longrightarrow}$ 
+\fbox{microscopic sections} $\stackrel{\mbox{segmentation}}{\longrightarrow}$
+\fbox{contours} $\ldots$
+
+\vspace{1in}
+
+\begin{tabular}{ccccc}
+\fbox{star-shaped visible object} 
+& $\stackrel{\mbox{Cyberware}}{\longrightarrow}$ 
+& \fbox{scattered data} 
+& $\stackrel{\mbox{trivial organization}}{\longrightarrow}$
+& \fbox{nonbranching contours}
+\\
+& & $\uparrow$
+\\
+& & Cy \\
+& & Wash \\
+& & Stan \\
+\end{tabular}
+
+\end{document}

@@ -1,0 +1,163 @@
+\documentclass[11pt]{article}
+\input{header}
+\newcommand{\plucker}{Pl\"{u}cker\ }
+\newcommand{\tang}{tangential curve\ }
+\newcommand{\tangs}{tangential curves\ }
+\newcommand{\Tang}{Tangential curve\ }
+\newcommand{\atang}{tangential $a$-curve\ }
+\newcommand{\btang}{tangential $b$-curve\ }
+\newcommand{\ctang}{tangential $c$-curve\ }
+\newcommand{\acurve}{$a$-curve\ }
+\newcommand{\bcurve}{$b$-curve\ }
+\newcommand{\ccurve}{$c$-curve\ }
+\newcommand{\atangs}{tangential $a$-curves\ }
+\newcommand{\btangs}{tangential $b$-curves\ }
+\newcommand{\ctangs}{tangential $c$-curves\ }
+\SingleSpace
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\topmargin}{-.2in}	% should be 0pt for 1in
+% \setlength{\headsep}{.5in}
+\setlength{\textheight}{8.5in}
+\setlength{\textwidth}{6.5in}
+\setlength{\columnsep}{5mm}	% width of gutter between columns
+\markright{NSF proposal: \today \hfill}
+\pagestyle{myheadings}
+% -----------------------------------------------------------------------------
+
+\begin{document}
+
+\title{Bitangents and the Geometric Modeling of Visual Events\\
+	for Visibility Analysis, Lighting, and Motion}
+\author{J.K. Johnstone}
+\maketitle
+	
+\begin{abstract}
+The bitangents of a scene of objects define many important loci:
+including the visual events where the set of visible objects undergoes a qualitative change,
+the paths of a shortest motion, and the boundaries of umbra, penumbra and complete light
+in a lighting simulation.
+Computation of the bitangents of curves and surfaces, and associated loci
+such as bitangent developables of surfaces, has not received
+much attention in the graphics or modeling literature.
+Most work on visibility, lighting, and robot motion
+has been restricted to polyhedra, where the bitangent problem is trivial.
+The maturation of these areas to smooth objects demands a full understanding
+of bitangents, and efficient algorithms for their computation.
+\end{abstract}
+
+\section{Introduction}
+
+Consider a scene of smooth objects and a camera (or eye or robot)
+moving about through this scene.
+Certain objects will be visible to the camera while others, completely blocked by intervening
+objects, will be invisible.
+(Here we consider an object to be visible if any part of it is visible.)
+There is a coherence to the visibility of the scene in the following sense.
+From almost all viewpoints,
+the qualitative visibility of the scene (the set of objects visible from
+the viewpoint) is invariant to small changes of the viewpoint.
+However, from some viewpoints, any positional change in the viewpoint
+will qualitatively change the visibility, by making visible an object previously
+invisible or making invisible a previously visible object.
+These special viewpoints are called visual events.
+For example, ---.
+The visibility analysis of a scene is dependent on the computation
+of these visual events.
+
+Visual events are viewpoints at which the visibility of a scene
+undergoes a qualitative change.
+
+===
+
+Tangent $\rightarrow$ Bitangent.
+Silhouette $\rightarrow$ Bisilhouette.
+
+===
+
+The bitangent lines of a 2-dimensional or 3-dimensional curved environment
+are fundamental to visibility, shortest paths, and lighting.
+We propose to study algorithms for the efficient construction of bitangents
+for a curved environment, the organization of these bitangents into coherent
+data structures, and the application of these structures to the computation
+of visibility, shortest paths, and lighting.
+
+The development of smooth curve and surface representations, such as Bezier 
+curves and surfaces, NURBS, subdivision curves and surfaces, and implicit curves
+and surfaces, has included a full treatment and analysis of tangent lines
+and planes, with formulaes for their efficient and elegant construction,
+such as tangent hodographs, tangents from the de Casteljau algorithm, and
+tangent or normal masks for subdivision curves and surfaces.
+However, there has not yet been an analogous complete treatment of bitangents.
+This despite the integral importance of bitangents to visibility analysis
+for efficient rendering and interactive interaction with a complicated scene,
+to efficient motion of a robot through the environment, and to lighting from
+non-point light sources.
+This may be partially explained by the predominant use of polygonal and polyhedral 
+environments in the early work on visibility, motion, and lighting,
+for issues of cost and simplicity.
+However, the area is maturing into the analysis of smooth enviroments
+(smooth visibility analysis, smooth obstacles, smooth light sources)
+and as this natural progression continues,
+the understanding of bitangents of smooth environments will become
+more and more important.
+
+A 2-dimensional smooth environment is described by a collection of curves,
+or by a collection of data points implicitly describing a collection of curves.
+The underlying representation of the curve should be flexible:
+Bezier curve, NURBS, subdivision curve, or implicit curve.
+For example, a curve could be defined explicitly by a B-spline control polygon,
+or implicitly as the $C^2$ cubic interpolating B-spline curve defined by 
+the data points \cite{farintext}.
+Or alternatively the curve could be defined explicitly by a Chaikin curve,
+or implicitly as the Dyn-Levin-Gregory subdivision curve interpolating the
+data points.
+Similarly for a 3-dimensional smooth environment except the curves are replaced
+by surfaces.
+
+\clearpage
+
+\Heading{APPLICATIONS}
+
+\section{Smooth Visibility Analysis}
+% \subsection{Silhouettes, Visual Events and Visibility Skeletons}
+
+% see 672/silhbiblio.tex
+
+\section{Smooth Lighting}
+
+\section{Smooth Motion}
+% \subsection{Visibility graphs}
+
+\section{Motion planning in Orientation Space}
+
+\section{Stable Placement of Objects}
+
+\Heading{TOOLS}
+
+\section{Bitangents}
+\subsection{Bezier curves}
+
+% See dual.tex, laptop notes, folder notes.
+
+\subsection{Chaikin and subdivision curves}
+
+\subsection{Bezier surfaces}
+
+\subsection{On $S^3$ and other surfaces}
+
+\section{Tritangents for Stable Object Placement}
+
+\section{Computation with Developable surfaces}
+% manipulation of developable surfaces (e.g., ruled surface intersection)
+\subsection{Unrolling a ruled surface}
+\subsection{Intersecting ruled surfaces}
+
+\section{Synergistic Activities}
+
+\begin{itemize}
+\item Applet demos and tutorials.
+\item Graphics camp.
+\end{itemize}
+
+\end{document}
